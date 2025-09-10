@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import {
   Heart,
   Shield,
@@ -26,10 +27,11 @@ import {
   TrendingUp,
   Sparkles
 } from "lucide-react";
+import Footer from '../components/ui/footer';
 
 export default function Page() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+  const navigate = useNavigate();
   return (
     <div className="min-h-screen bg-white">
       {/* Navigation */}
@@ -142,26 +144,52 @@ export default function Page() {
               </div>
             </div>
 
-            <div className="relative transform hover:scale-105 transition-transform duration-500">
-              <div className="relative h-96 bg-gradient-to-br from-blue-100 to-purple-100 rounded-3xl overflow-hidden shadow-2xl">
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 animate-fade-in"></div>
-                <div className="absolute inset-0 flex items-center justify-center animate-fade-in delay-200">
-                  <div className="w-32 h-32 bg-white rounded-full shadow-lg flex items-center justify-center transform hover:scale-110 transition-transform duration-300">
-                    <Stethoscope className="w-16 h-16 text-blue-600 animate-pulse-slow" />
-                  </div>
-                </div>
-                
-                <div className="absolute top-6 right-6 bg-white p-4 rounded-xl shadow-lg transform hover:scale-105 transition-transform duration-300">
-                  <div className="flex items-center space-x-2">
-                    <div className="w-3 h-3 bg-green-500 rounded-full animate-ping-slow"></div>
-                    <span className="text-sm font-semibold text-gray-700">AI Active</span>
-                  </div>
-                </div>
+            <div className="space-y-6">
+              {/* User Type Selection */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                {[
+                  { label: "Doctor", icon: Stethoscope, color: "bg-blue-50 hover:bg-blue-100 text-blue-600 border-blue-200" },
+                  { label: "Patient", icon: UserCheck, color: "bg-green-50 hover:bg-green-100 text-green-600 border-green-200" },
+                  { label: "Nurse", icon: Heart, color: "bg-purple-50 hover:bg-purple-100 text-purple-600 border-purple-200" },
+                  { label: "NGO", icon: Users, color: "bg-orange-50 hover:bg-orange-100 text-orange-600 border-orange-200" }
+                ].map((option, index) => (
+                  <button
+                    key={index}
+                    onClick={() => {
+                      if (option.label === "Doctor") navigate("/doctor-login");
+                      if (option.label === "Patient") navigate("/patient-login");
+                      if (option.label === "Nurse") navigate("/nurse-login");
+                      if (option.label === "NGO") navigate("/ngo-login");
+                    }}
+                    className={`${option.color} p-3 rounded-xl border-2 hover:border-current transition-all duration-300 transform hover:scale-105 text-center font-semibold text-sm`}
+                  >
+                    <option.icon className="w-5 h-5 mx-auto mb-1" />
+                    {option.label}
+                  </button>
+                ))}
+              </div>
 
-                <div className="absolute bottom-6 left-6 bg-white p-4 rounded-xl shadow-lg transform hover:scale-105 transition-transform duration-300">
-                  <div className="flex items-center space-x-3">
-                    <CheckCircle className="w-5 h-5 text-green-500" />
-                    <span className="text-sm font-semibold text-gray-700">Health Analysis Complete</span>
+              <div className="relative transform hover:scale-105 transition-transform duration-500">
+                <div className="relative h-96 bg-gradient-to-br from-blue-100 to-purple-100 rounded-3xl overflow-hidden shadow-2xl">
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 animate-fade-in"></div>
+                  <div className="absolute inset-0 flex items-center justify-center animate-fade-in delay-200">
+                    <div className="w-32 h-32 bg-white rounded-full shadow-lg flex items-center justify-center transform hover:scale-110 transition-transform duration-300">
+                      <Stethoscope className="w-16 h-16 text-blue-600 animate-pulse-slow" />
+                    </div>
+                  </div>
+                  
+                  <div className="absolute top-6 right-6 bg-white p-4 rounded-xl shadow-lg transform hover:scale-105 transition-transform duration-300">
+                    <div className="flex items-center space-x-2">
+                      <div className="w-3 h-3 bg-green-500 rounded-full animate-ping-slow"></div>
+                      <span className="text-sm font-semibold text-gray-700">AI Active</span>
+                    </div>
+                  </div>
+
+                  <div className="absolute bottom-6 left-6 bg-white p-4 rounded-xl shadow-lg transform hover:scale-105 transition-transform duration-300">
+                    <div className="flex items-center space-x-3">
+                      <CheckCircle className="w-5 h-5 text-green-500" />
+                      <span className="text-sm font-semibold text-gray-700">Health Analysis Complete</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -414,67 +442,7 @@ export default function Page() {
           </div>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-4 gap-12">
-            <div className="space-y-4">
-              <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl flex items-center justify-center transform hover:rotate-12 transition-transform duration-300">
-                  <Heart className="w-6 h-6 text-white" />
-                </div>
-                <span className="text-2xl font-bold">VedSeva</span>
-              </div>
-              <p className="text-gray-300 leading-relaxed">
-                Transforming healthcare with AI-powered solutions for better health outcomes in rural and urban communities.
-              </p>
-            </div>
-            
-            <div>
-              <h3 className="font-bold mb-6 text-lg">Services</h3>
-              <ul className="space-y-3 text-gray-300">
-                <li className="hover:text-white transition-colors cursor-pointer">AI Telemedicine</li>
-                <li className="hover:text-white transition-colors cursor-pointer">Health Monitoring</li>
-                <li className="hover:text-white transition-colors cursor-pointer">Precision Medicine</li>
-                <li className="hover:text-white transition-colors cursor-pointer">Emergency Care</li>
-              </ul>
-            </div>
-            
-            <div>
-              <h3 className="font-bold mb-6 text-lg">Technology</h3>
-              <ul className="space-y-3 text-gray-300">
-                <li className="hover:text-white transition-colors cursor-pointer">AI Diagnostics</li>
-                <li className="hover:text-white transition-colors cursor-pointer">Secure Platform</li>
-                <li className="hover:text-white transition-colors cursor-pointer">Real-time Analytics</li>
-                <li className="hover:text-white transition-colors cursor-pointer">Predictive Care</li>
-              </ul>
-            </div>
-            
-            <div>
-              <h3 className="font-bold mb-6 text-lg">Contact</h3>
-              <div className="space-y-3 text-gray-300">
-                <div className="flex items-center space-x-2">
-                  <Phone className="w-4 h-4" />
-                  <span>1800-123-4567</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Mail className="w-4 h-4" />
-                  <span>support@vedseva.in</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <MapPin className="w-4 h-4" />
-                  <span>New Delhi, India</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
-            <p>&copy; 2024 VedSeva. Transforming lives through AI-powered healthcare.</p>
-          </div>
-        </div>
-      </footer>
+      <Footer/>
     </div>
   );
 }
