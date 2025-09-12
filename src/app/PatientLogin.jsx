@@ -20,6 +20,7 @@ import {
   Clock
 } from "lucide-react";
 import Footer from '../components/ui/footer';
+import { useNavigate } from "react-router-dom";
 
 export default function PatientLoginPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -29,6 +30,8 @@ export default function PatientLoginPage() {
   const [rememberMe, setRememberMe] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
+
+  const navigate = useNavigate();
 
   const handleLogin = async () => {
     // Validation
@@ -49,6 +52,7 @@ export default function PatientLoginPage() {
       setIsLoading(false);
       // Handle successful login logic here
       console.log('Login attempt:', { username, password, rememberMe });
+      navigate("/patient-profile");
     }, 2000);
   };
 
