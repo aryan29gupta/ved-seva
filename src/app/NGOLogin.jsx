@@ -21,6 +21,7 @@ import {
   HandHeart
 } from "lucide-react";
 import Footer from '../components/ui/footer';
+import { useNavigate } from 'react-router-dom';
 
 export default function NGOLoginPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -32,6 +33,8 @@ export default function NGOLoginPage() {
   const [rememberMe, setRememberMe] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
+
+  const navigate = useNavigate();
 
   const indianStates = [
     "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh",
@@ -63,6 +66,7 @@ export default function NGOLoginPage() {
     setTimeout(() => {
       setIsLoading(false);
       // Handle successful login logic here
+      navigate("/NGO-profile")
       console.log('Login attempt:', { ngoName, username, password, selectedState, rememberMe });
     }, 2000);
   };

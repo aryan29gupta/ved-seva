@@ -20,6 +20,7 @@ import {
   UserCheck
 } from "lucide-react";
 import Footer from '../components/ui/footer';
+import { useNavigate } from "react-router-dom";
 
 export default function NurseLoginPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -29,6 +30,8 @@ export default function NurseLoginPage() {
   const [rememberMe, setRememberMe] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
+
+  const navigate = useNavigate();
 
   const handleLogin = async () => {
     // Validation
@@ -49,6 +52,7 @@ export default function NurseLoginPage() {
       setIsLoading(false);
       // Handle successful login logic here
       console.log('Login attempt:', { username, password, rememberMe });
+      navigate("/nurse-profile");
     }, 2000);
   };
 

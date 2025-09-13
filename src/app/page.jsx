@@ -148,10 +148,10 @@ export default function Page() {
               {/* User Type Selection */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 {[
-                  { label: "Doctor", icon: Stethoscope, color: "bg-blue-50 hover:bg-blue-100 text-blue-600 border-blue-200" },
-                  { label: "Patient", icon: UserCheck, color: "bg-green-50 hover:bg-green-100 text-green-600 border-green-200" },
-                  { label: "Nurse", icon: Heart, color: "bg-purple-50 hover:bg-purple-100 text-purple-600 border-purple-200" },
-                  { label: "NGO", icon: Users, color: "bg-orange-50 hover:bg-orange-100 text-orange-600 border-orange-200" }
+                  { label: "Doctor", icon: Stethoscope, color: "bg-blue-50 hover:bg-blue-100 text-blue-600 border-blue-300" },
+                  { label: "Patient", icon: UserCheck, color: "bg-purple-50 hover:bg-purple-100 text-purple-600 border-purple-300" },
+                  { label: "Nurse", icon: Heart, color: "bg-red-50 hover:bg-red-100 text-red-600 border-red-300" },
+                  { label: "NGO", icon: Users, color: "bg-green-50 hover:bg-green-100 text-green-600 border-green-300" }
                 ].map((option, index) => (
                   <button
                     key={index}

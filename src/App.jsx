@@ -6,6 +6,8 @@ import NurseLoginPage from "./app/NurseLogin";
 import NGOLoginPage from "./app/NGOLogin";
 import DoctorProfileDashboard from "./app/DoctorProfile";
 import VedsevaPatientProfile from "./app/PatientProfile";
+import NurseProfile from "./app/NurseProfile";
+import NGODashboard from "./app/NGOProfile";
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
         <Route path="/ngo-login" element={<NGOLoginPage />} />
         <Route path="/doctor-profile" element={<DoctorProfileDashboard />} />
         <Route path="/patient-profile" element={<VedsevaPatientProfile />} />
+        <Route path="/nurse-profile" element={<NurseProfile />} />
+        <Route path="/NGO-profile" element={<NGODashboard />} />
       </Routes>
     </BrowserRouter>
   );
