@@ -2,62 +2,87 @@ import React, { useState } from 'react';
 import {
   Heart,
   Shield,
-  MapPin,
+  User,
+  Calendar,
+  Settings,
+  LogOut,
+  Camera,
+  Edit3,
+  Save,
+  X,
   Phone,
   Mail,
-  Users,
-  Menu,
-  X,
-  User,
-  Edit2,
-  Save,
+  MapPin,
+  GraduationCap,
+  Stethoscope,
+  Clock,
+  DollarSign,
   CheckCircle,
-  Sparkles,
-  Brain,
+  Upload,
+  Bell,
+  Menu,
+  Eye,
+  Award,
+  BookOpen,
+  Building,
+  Globe,
+  Users,
+  Star,
   Activity,
   Droplet,
   AlertTriangle,
-  CreditCard,
-  Calendar,
   Weight,
   Ruler,
   Pill,
   FileText,
   UserCheck,
   Home,
-  LogOut
+  Bot,
+  Brain,
+  Sparkles
 } from "lucide-react";
 import Footer from '../components/ui/footer';
+import { useNavigate } from "react-router-dom";
 
-const VedsevaPatientProfile = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
-  const [profile, setProfile] = useState({
-    // Basic Information
-    fullName: 'Rajesh Kumar Sharma',
+export default function PatientProfileDashboard() {
+  const navigate = useNavigate();
+  const [activeSection, setActiveSection] = useState('profile');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [editMode, setEditMode] = useState({});
+  const [profileData, setProfileData] = useState({
+    // Header Card
+    profilePhoto: null,
+    fullName: "Rajesh Kumar Sharma",
     age: 34,
-    gender: 'Male',
-    phone: '+91 9876543210',
-    email: 'rajesh.sharma@email.com',
-    aadhaar: '1234 5678 9012',
+    patientId: "VS-PT-12345",
+    isVerified: true,
+    
+    // Personal Information
+    gender: "Male",
+    contactNumber: "+91 9876543210",
+    email: "rajesh.sharma@vedseva.com",
+    city: "New Delhi",
+    aadhaar: "1234 5678 9012",
     
     // Medical Information
-    bloodGroup: 'B+',
-    allergies: ['Penicillin', 'Shellfish'],
-    chronicConditions: ['Hypertension'],
-    currentMedications: 'Amlodipine 5mg (once daily), Vitamin D3 (weekly)',
-    
-    // Vitals
+    bloodGroup: "B+",
     height: 175,
     weight: 78,
+    allergies: ["Penicillin", "Shellfish"],
+    chronicConditions: ["Hypertension"],
+    currentMedications: "Amlodipine 5mg (once daily), Vitamin D3 (weekly)",
     
     // Emergency Contact
-    emergencyName: 'Priya Sharma',
-    emergencyRelation: 'Spouse',
-    emergencyPhone: '+91 9876543211'
+    emergencyName: "Priya Sharma",
+    emergencyRelation: "Spouse",
+    emergencyPhone: "+91 9876543211",
+    
+    // Healthcare Preferences
+    preferredConsultationType: "Hybrid",
+    preferredLanguage: "Hindi",
+    insuranceProvider: "Star Health",
+    insurancePolicyNumber: "SH-789456123"
   });
-
-  const [tempProfile, setTempProfile] = useState(profile);
 
   // Calculate BMI
   const calculateBMI = (height, weight) => {
@@ -69,612 +94,749 @@ const VedsevaPatientProfile = () => {
   };
 
   const getBMICategory = (bmi) => {
-    if (bmi < 18.5) return { text: 'Underweight', color: 'text-yellow-600', bgColor: 'bg-yellow-500' };
-    if (bmi < 25) return { text: 'Normal', color: 'text-green-600', bgColor: 'bg-green-500' };
-    if (bmi < 30) return { text: 'Overweight', color: 'text-orange-600', bgColor: 'bg-orange-500' };
-    return { text: 'Obese', color: 'text-red-600', bgColor: 'bg-red-500' };
+    if (bmi < 18.5) return { text: 'Underweight', color: 'text-yellow-600' };
+    if (bmi < 25) return { text: 'Normal', color: 'text-green-600' };
+    if (bmi < 30) return { text: 'Overweight', color: 'text-orange-600' };
+    return { text: 'Obese', color: 'text-red-600' };
   };
 
-  const handleEdit = () => {
-    setTempProfile(profile);
-    setIsEditing(true);
-  };
-
-  const handleSave = () => {
-    setProfile(tempProfile);
-    setIsEditing(false);
-  };
-
-  const handleCancel = () => {
-    setTempProfile(profile);
-    setIsEditing(false);
+  const toggleEdit = (section) => {
+    setEditMode(prev => ({ ...prev, [section]: !prev[section] }));
   };
 
   const handleInputChange = (field, value) => {
-    setTempProfile(prev => ({
-      ...prev,
-      [field]: value
-    }));
+    setProfileData(prev => ({ ...prev, [field]: value }));
   };
 
   const handleArrayChange = (field, value) => {
     const array = value.split(',').map(item => item.trim()).filter(item => item);
-    setTempProfile(prev => ({
-      ...prev,
-      [field]: array
-    }));
+    setProfileData(prev => ({ ...prev, [field]: array }));
   };
 
-  const chronicConditionsOptions = [
-    'Diabetes', 'Hypertension', 'Asthma', 'Heart Disease', 
-    'Arthritis', 'High Cholesterol', 'Thyroid Disorder', 'Kidney Disease'
+  const sidebarItems = [
+    { id: 'profile', icon: User, label: 'Profile', active: true },
+    { id: 'appointments', icon: Calendar, label: 'Appointments' },
+    { id: 'reports', icon: FileText, label: 'Medical Reports' },
+    { id: 'prescriptions', icon: Pill, label: 'Prescriptions' },
+    { id: 'settings', icon: Settings, label: 'Settings' },
+    { id: 'signout', icon: LogOut, label: 'Sign Out' }
   ];
 
-  const bmi = calculateBMI(isEditing ? tempProfile.height : profile.height, 
-                          isEditing ? tempProfile.weight : profile.weight);
+  const EditableField = ({ label, value, field, type = "text", multiline = false, options = null }) => {
+    const isEditing = editMode[field];
+    
+    return (
+      <div className="mb-6">
+        <div className="flex items-center justify-between mb-2">
+          <label className="text-sm font-semibold text-gray-700">{label}</label>
+          <button
+            onClick={() => toggleEdit(field)}
+            className="text-blue-500 hover:text-blue-600 transition-colors p-1"
+          >
+            {isEditing ? <Save className="w-4 h-4" /> : <Edit3 className="w-4 h-4" />}
+          </button>
+        </div>
+        {isEditing ? (
+          options ? (
+            <select
+              value={value}
+              onChange={(e) => handleInputChange(field, e.target.value)}
+              className="w-full p-3 border-2 border-blue-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
+            >
+              {options.map(option => (
+                <option key={option} value={option}>{option}</option>
+              ))}
+            </select>
+          ) : multiline ? (
+            <textarea
+              value={value}
+              onChange={(e) => handleInputChange(field, e.target.value)}
+              className="w-full p-3 border-2 border-blue-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 resize-none"
+              rows={4}
+            />
+          ) : (
+            <input
+              type={type}
+              value={value}
+              onChange={(e) => handleInputChange(field, e.target.value)}
+              className="w-full p-3 border-2 border-blue-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
+            />
+          )
+        ) : (
+          <div className="p-3 bg-gray-50 rounded-lg text-gray-800">{value || "Not specified"}</div>
+        )}
+      </div>
+    );
+  };
+
+  const bmi = calculateBMI(profileData.height, profileData.weight);
   const bmiCategory = getBMICategory(parseFloat(bmi));
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Navigation */}
-      <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+      {/* Header */}
+      <header className="bg-white/95 backdrop-blur-md shadow-sm border-b border-gray-100 sticky top-0 z-50">
+        <div className="px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg transform hover:scale-110 transition-transform duration-300">
-                <Heart className="w-6 h-6 text-white" />
+            <div className="flex items-center space-x-4">
+              <button
+                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                className="lg:hidden text-gray-600 hover:text-blue-600 transition-colors"
+              >
+                <Menu className="w-6 h-6" />
+              </button>
+              <div className="flex items-center space-x-3">
+                <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                  <Heart className="w-5 h-5 text-white" />
+                </div>
+                <span className="text-xl font-bold text-gray-900">VedSeva</span>
               </div>
-              <span className="text-2xl font-bold text-gray-900">VedSeva</span>
             </div>
             
-            {/* Desktop Menu */}
-            <div className="hidden md:flex items-center space-x-8">
-              <a href="#dashboard" className="text-gray-700 hover:text-blue-600 transition-colors font-medium flex items-center space-x-2">
-                <Home className="w-4 h-4" />
-                <span>Dashboard</span>
-              </a>
-              <a href="#appointments" className="text-gray-700 hover:text-blue-600 transition-colors font-medium flex items-center space-x-2">
-                <Calendar className="w-4 h-4" />
-                <span>Appointments</span>
-              </a>
-              <a href="#reports" className="text-gray-700 hover:text-blue-600 transition-colors font-medium flex items-center space-x-2">
-                <FileText className="w-4 h-4" />
-                <span>Reports</span>
-              </a>
-              <button className="bg-gradient-to-r from-red-500 to-pink-600 text-white px-4 py-2 rounded-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 font-medium flex items-center space-x-2">
-                <LogOut className="w-4 h-4" />
-                <span>Logout</span>
+            <div className="flex items-center space-x-4">
+              <button className="relative text-gray-600 hover:text-blue-600 transition-colors">
+                <Bell className="w-6 h-6" />
+                <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"></div>
               </button>
-            </div>
-
-            {/* Mobile Menu Button */}
-            <div className="md:hidden">
-              <button
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="text-gray-700 hover:text-blue-600 transition-colors duration-200"
-              >
-                {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-              </button>
+              <div className="flex items-center space-x-3">
+                <div className="w-8 h-8 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full flex items-center justify-center">
+                  <span className="text-white text-sm font-semibold">RS</span>
+                </div>
+                <span className="hidden sm:block text-sm font-medium text-gray-700">Rajesh Sharma</span>
+              </div>
             </div>
           </div>
+        </div>
+      </header>
 
-          {/* Mobile Menu */}
-          {isMenuOpen && (
-            <div className="md:hidden py-4 border-t border-gray-100">
-              <div className="flex flex-col space-y-4">
-                <a href="#dashboard" className="text-gray-700 hover:text-blue-600 font-medium flex items-center space-x-2">
-                  <Home className="w-4 h-4" />
-                  <span>Dashboard</span>
-                </a>
-                <a href="#appointments" className="text-gray-700 hover:text-blue-600 font-medium flex items-center space-x-2">
-                  <Calendar className="w-4 h-4" />
-                  <span>Appointments</span>
-                </a>
-                <a href="#reports" className="text-gray-700 hover:text-blue-600 font-medium flex items-center space-x-2">
-                  <FileText className="w-4 h-4" />
-                  <span>Reports</span>
-                </a>
-                <button className="bg-gradient-to-r from-red-500 to-pink-600 text-white px-4 py-2 rounded-lg font-medium w-fit hover:shadow-lg transition-shadow flex items-center space-x-2">
-                  <LogOut className="w-4 h-4" />
-                  <span>Logout</span>
-                </button>
+      <div className="flex">
+        {/* Sidebar */}
+        <aside className={`${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 fixed lg:static inset-y-0 left-0 z-50 w-64 bg-white shadow-xl border-r border-gray-100 transition-transform duration-300 ease-in-out`}>
+          <div className="flex flex-col h-full">
+            <div className="p-6 border-b border-gray-100">
+              <h2 className="text-lg font-semibold text-gray-900">Patient Portal</h2>
+            </div>
+            
+            <nav className="flex-1 p-4 space-y-2">
+              {sidebarItems.map((item) => {
+                const Icon = item.icon;
+                const isActive = activeSection === item.id;
+                return (
+                  <button
+                    key={item.id}
+                    onClick={() => {
+                      setActiveSection(item.id);
+                      setIsSidebarOpen(false);
+                    }}
+                    className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 ${
+                      isActive
+                        ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg transform scale-105'
+                        : 'text-gray-600 hover:bg-blue-50 hover:text-blue-600'
+                    }`}
+                  >
+                    <Icon className="w-5 h-5" />
+                    <span className="font-medium">{item.label}</span>
+                  </button>
+                );
+              })}
+            </nav>
+          </div>
+        </aside>
+
+        {/* Overlay for mobile */}
+        {isSidebarOpen && (
+          <div
+            className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+            onClick={() => setIsSidebarOpen(false)}
+          ></div>
+        )}
+
+        {/* Main Content */}
+        <main className="flex-1 p-6 lg:p-8">
+          {activeSection === 'profile' && (
+            <div className="max-w-4xl mx-auto space-y-8">
+              {/* Header Card */}
+              <div className="bg-white/80 backdrop-blur-lg rounded-3xl shadow-xl border border-gray-100 p-8">
+                <div className="flex flex-col md:flex-row items-center md:items-start space-y-6 md:space-y-0 md:space-x-8">
+                  {/* Profile Photo */}
+                  <div className="relative group">
+                    <div className="w-32 h-32 bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center text-4xl font-bold text-white shadow-lg">
+                      {profileData.profilePhoto ? (
+                        <img src={profileData.profilePhoto} alt="Profile" className="w-full h-full object-cover rounded-2xl" />
+                      ) : (
+                        profileData.fullName.split(' ').map(n => n[0]).join('')
+                      )}
+                    </div>
+                    <button className="absolute inset-0 bg-black bg-opacity-40 rounded-2xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                      <Camera className="w-8 h-8 text-white" />
+                    </button>
+                  </div>
+                  
+                  {/* Basic Info */}
+                  <div className="flex-1 text-center md:text-left">
+                    <div className="flex items-center justify-center md:justify-start space-x-3 mb-2">
+                      <h1 className="text-3xl font-black text-gray-900">{profileData.fullName}</h1>
+                      {profileData.isVerified && (
+                        <div className="bg-green-100 p-1 rounded-full">
+                          <CheckCircle className="w-6 h-6 text-green-600" />
+                        </div>
+                      )}
+                    </div>
+                    <p className="text-xl text-green-600 font-semibold mb-2">Patient ID: {profileData.patientId}</p>
+                    <p className="text-lg text-gray-600 mb-4">{profileData.age} years old • {profileData.gender}</p>
+                    
+                    <div className="flex flex-wrap gap-4 justify-center md:justify-start mb-6">
+                      <div className="flex items-center space-x-2 bg-blue-50 px-4 py-2 rounded-lg">
+                        <Droplet className="w-4 h-4 text-blue-600" />
+                        <span className="text-sm font-medium text-blue-800">{profileData.bloodGroup}</span>
+                      </div>
+                      <div className="flex items-center space-x-2 bg-purple-50 px-4 py-2 rounded-lg">
+                        <Activity className="w-4 h-4 text-purple-600" />
+                        <span className="text-sm font-medium text-purple-800">BMI: {bmi}</span>
+                      </div>
+                      <div className="flex items-center space-x-2 bg-green-50 px-4 py-2 rounded-lg">
+                        <Star className="w-4 h-4 text-green-600" />
+                        <span className="text-sm font-medium text-green-800">Active Patient</span>
+                      </div>
+                    </div>
+
+                    {/* Arogya Sahayak AI Button */}
+                    <div className="mt-6">
+                      <button className="group relative inline-flex items-center space-x-3 px-8 py-4 bg-gradient-to-r from-purple-600 via-blue-600 to-teal-600 text-white rounded-2xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 font-bold text-lg overflow-hidden">
+                        <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-blue-600 to-teal-600 opacity-90 group-hover:opacity-100 transition-opacity"></div>
+                        <div className="absolute inset-0 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 opacity-0 group-hover:opacity-20 transition-opacity"></div>
+                        <div className="relative flex items-center space-x-3">
+                          <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center group-hover:rotate-12 transition-transform">
+                            <Bot className="w-5 h-5 text-white" />
+                          </div>
+                          <span className="group-hover:text-yellow-200 transition-colors"  onClick={() => navigate("/book-appointment")}>Arogya Sahayak AI</span>
+                          <Sparkles className="w-5 h-5 text-yellow-300 group-hover:text-yellow-200 transition-colors animate-pulse" />
+                        </div>
+                        <div className="absolute -top-1 -right-1 w-6 h-6 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full flex items-center justify-center">
+                          <Brain className="w-3 h-3 text-white" />
+                        </div>
+                      </button>
+                      <p className="text-sm text-gray-500 mt-2 text-center md:text-left">Your AI health assistant for personalized care</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Personal Information */}
+              <div className="bg-white/80 backdrop-blur-lg rounded-3xl shadow-xl border border-gray-100 p-8">
+                <div className="flex items-center space-x-3 mb-6">
+                  <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
+                    <User className="w-6 h-6 text-blue-600" />
+                  </div>
+                  <h2 className="text-2xl font-bold text-gray-900">Personal Information</h2>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <EditableField label="Full Name" value={profileData.fullName} field="fullName" />
+                  <EditableField label="Age" value={profileData.age} field="age" type="number" />
+                  <EditableField 
+                    label="Gender" 
+                    value={profileData.gender} 
+                    field="gender" 
+                    options={["Male", "Female", "Other"]}
+                  />
+                  <EditableField 
+                    label="Blood Group" 
+                    value={profileData.bloodGroup} 
+                    field="bloodGroup" 
+                    options={["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"]}
+                  />
+                  <EditableField label="Contact Number" value={profileData.contactNumber} field="contactNumber" type="tel" />
+                  <EditableField label="Email" value={profileData.email} field="email" type="email" />
+                  <EditableField label="City" value={profileData.city} field="city" />
+                  <EditableField label="Aadhaar Number" value={profileData.aadhaar} field="aadhaar" />
+                </div>
+              </div>
+
+              {/* Health Vitals */}
+              <div className="bg-white/80 backdrop-blur-lg rounded-3xl shadow-xl border border-gray-100 p-8">
+                <div className="flex items-center space-x-3 mb-6">
+                  <div className="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center">
+                    <Activity className="w-6 h-6 text-green-600" />
+                  </div>
+                  <h2 className="text-2xl font-bold text-gray-900">Health Vitals</h2>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                  <EditableField label="Height (cm)" value={profileData.height} field="height" type="number" />
+                  <EditableField label="Weight (kg)" value={profileData.weight} field="weight" type="number" />
+                  <div className="mb-6">
+                    <label className="text-sm font-semibold text-gray-700 block mb-2">BMI</label>
+                    <div className={`p-3 bg-gray-50 rounded-lg text-gray-800 font-bold ${bmiCategory.color}`}>
+                      {bmi} - {bmiCategory.text}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Medical Information */}
+              <div className="bg-white/80 backdrop-blur-lg rounded-3xl shadow-xl border border-gray-100 p-8">
+                <div className="flex items-center space-x-3 mb-6">
+                  <div className="w-10 h-10 bg-red-100 rounded-xl flex items-center justify-center">
+                    <Heart className="w-6 h-6 text-red-600" />
+                  </div>
+                  <h2 className="text-2xl font-bold text-gray-900">Medical Information</h2>
+                </div>
+                
+                <div className="space-y-6">
+                  {/* Allergies */}
+                  <div className="mb-6">
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="text-sm font-semibold text-gray-700">Allergies</label>
+                      <button
+                        onClick={() => toggleEdit('allergies')}
+                        className="text-blue-500 hover:text-blue-600 transition-colors p-1"
+                      >
+                        {editMode.allergies ? <Save className="w-4 h-4" /> : <Edit3 className="w-4 h-4" />}
+                      </button>
+                    </div>
+                    {editMode.allergies ? (
+                      <textarea
+                        value={profileData.allergies.join(', ')}
+                        onChange={(e) => handleArrayChange('allergies', e.target.value)}
+                        className="w-full p-3 border-2 border-blue-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
+                        placeholder="Separate with commas"
+                        rows={3}
+                      />
+                    ) : (
+                      <div className="space-y-2">
+                        {profileData.allergies.length > 0 ? profileData.allergies.map((allergy, index) => (
+                          <div key={index} className="inline-block bg-red-50 text-red-700 px-3 py-1 rounded-full text-sm font-medium mr-2">
+                            {allergy}
+                          </div>
+                        )) : (
+                          <div className="p-3 bg-gray-50 rounded-lg text-gray-500">No known allergies</div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Chronic Conditions */}
+                  <div className="mb-6">
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="text-sm font-semibold text-gray-700">Chronic Conditions</label>
+                      <button
+                        onClick={() => toggleEdit('chronicConditions')}
+                        className="text-blue-500 hover:text-blue-600 transition-colors p-1"
+                      >
+                        {editMode.chronicConditions ? <Save className="w-4 h-4" /> : <Edit3 className="w-4 h-4" />}
+                      </button>
+                    </div>
+                    {editMode.chronicConditions ? (
+                      <textarea
+                        value={profileData.chronicConditions.join(', ')}
+                        onChange={(e) => handleArrayChange('chronicConditions', e.target.value)}
+                        className="w-full p-3 border-2 border-blue-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
+                        placeholder="Separate with commas"
+                        rows={3}
+                      />
+                    ) : (
+                      <div className="space-y-2">
+                        {profileData.chronicConditions.length > 0 ? profileData.chronicConditions.map((condition, index) => (
+                          <div key={index} className="inline-block bg-orange-50 text-orange-700 px-3 py-1 rounded-full text-sm font-medium mr-2">
+                            {condition}
+                          </div>
+                        )) : (
+                          <div className="p-3 bg-gray-50 rounded-lg text-gray-500">No chronic conditions</div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+
+                  <EditableField 
+                    label="Current Medications" 
+                    value={profileData.currentMedications} 
+                    field="currentMedications" 
+                    multiline={true}
+                  />
+                </div>
+              </div>
+
+              {/* Emergency Contact */}
+              <div className="bg-white/80 backdrop-blur-lg rounded-3xl shadow-xl border border-gray-100 p-8">
+                <div className="flex items-center space-x-3 mb-6">
+                  <div className="w-10 h-10 bg-orange-100 rounded-xl flex items-center justify-center">
+                    <Users className="w-6 h-6 text-orange-600" />
+                  </div>
+                  <h2 className="text-2xl font-bold text-gray-900">Emergency Contact</h2>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <EditableField label="Name" value={profileData.emergencyName} field="emergencyName" />
+                  <EditableField 
+                    label="Relation" 
+                    value={profileData.emergencyRelation} 
+                    field="emergencyRelation"
+                    options={["Spouse", "Parent", "Child", "Sibling", "Friend", "Other"]}
+                  />
+                  <EditableField label="Phone Number" value={profileData.emergencyPhone} field="emergencyPhone" type="tel" />
+                </div>
+              </div>
+
+              {/* Healthcare Preferences */}
+              <div className="bg-white/80 backdrop-blur-lg rounded-3xl shadow-xl border border-gray-100 p-8">
+                <div className="flex items-center space-x-3 mb-6">
+                  <div className="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center">
+                    <Settings className="w-6 h-6 text-purple-600" />
+                  </div>
+                  <h2 className="text-2xl font-bold text-gray-900">Healthcare Preferences</h2>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <EditableField 
+                    label="Preferred Consultation Type" 
+                    value={profileData.preferredConsultationType} 
+                    field="preferredConsultationType"
+                    options={["Online", "In-person", "Hybrid"]}
+                  />
+                  <EditableField 
+                    label="Preferred Language" 
+                    value={profileData.preferredLanguage} 
+                    field="preferredLanguage"
+                    options={["Hindi", "English", "Bengali", "Tamil", "Telugu", "Other"]}
+                  />
+                  <EditableField label="Insurance Provider" value={profileData.insuranceProvider} field="insuranceProvider" />
+                  <EditableField label="Policy Number" value={profileData.insurancePolicyNumber} field="insurancePolicyNumber" />
+                </div>
               </div>
             </div>
           )}
-        </div>
-      </nav>
 
-      {/* Profile Header Section */}
-      <section className="relative py-16 px-4 sm:px-6 lg:px-8 overflow-hidden">
-        {/* Animated Background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-purple-50 z-0">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-blue-200/30 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-purple-200/30 rounded-full blur-3xl animate-pulse" style={{animationDelay: '1s'}}></div>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-green-200/20 rounded-full blur-2xl animate-pulse" style={{animationDelay: '0.5s'}}></div>
-        </div>
-
-        <div className="max-w-7xl mx-auto relative z-10">
-          {/* Header */}
-          <div className="text-center mb-12">
-            <div className="flex items-center justify-center space-x-3 text-blue-600 mb-6">
-              <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center transform hover:scale-110 transition-transform duration-300">
-                <Sparkles className="w-5 h-5" />
-              </div>
-              <span className="text-sm font-semibold uppercase tracking-wider">Patient Portal</span>
-            </div>
-
-            <h1 className="text-5xl md:text-6xl font-black text-gray-900 leading-tight mb-6">
-              My Health
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 block">
-                Profile
-              </span>
-            </h1>
-
-            <p className="text-xl text-gray-600 leading-relaxed max-w-2xl mx-auto mb-8">
-              Manage your personal health information, track your vitals, and stay connected with your healthcare team.
-            </p>
-
-            {/* Action Button */}
-            {!isEditing ? (
-              <button
-                onClick={handleEdit}
-                className="group inline-flex items-center space-x-3 px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-2xl hover:shadow-xl transform hover:scale-105 transition-all duration-300 font-semibold text-lg"
-              >
-                <Edit2 className="w-5 h-5 group-hover:rotate-12 transition-transform duration-200" />
-                <span>Edit Profile</span>
-              </button>
-            ) : (
-              <div className="flex justify-center space-x-4">
-                <button
-                  onClick={handleSave}
-                  className="group inline-flex items-center space-x-3 px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-2xl hover:shadow-xl transform hover:scale-105 transition-all duration-300 font-semibold text-lg"
-                >
-                  <Save className="w-5 h-5" />
-                  <span>Save Changes</span>
-                </button>
-                <button
-                  onClick={handleCancel}
-                  className="group inline-flex items-center space-x-3 px-8 py-4 bg-gradient-to-r from-gray-500 to-gray-600 text-white rounded-2xl hover:shadow-xl transform hover:scale-105 transition-all duration-300 font-semibold text-lg"
-                >
-                  <X className="w-5 h-5" />
-                  <span>Cancel</span>
-                </button>
-              </div>
-            )}
-          </div>
-
-          {/* Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-16">
-            <div className="bg-white/80 backdrop-blur-lg rounded-2xl shadow-xl border border-gray-100 p-6 transform hover:scale-105 transition-all duration-300">
-              <div className="flex items-center justify-between mb-4">
-                <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg">
-                  <Droplet className="w-6 h-6 text-white" />
+          {/* Appointments Section */}
+          {activeSection === 'appointments' && (
+            <div className="max-w-4xl mx-auto space-y-8">
+              <div className="bg-white/80 backdrop-blur-lg rounded-3xl shadow-xl border border-gray-100 p-8">
+                <div className="flex items-center space-x-3 mb-6">
+                  <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
+                    <Calendar className="w-6 h-6 text-blue-600" />
+                  </div>
+                  <h2 className="text-2xl font-bold text-gray-900">My Appointments</h2>
                 </div>
-              </div>
-              <div className="text-2xl font-black text-blue-600 mb-1">{profile.bloodGroup}</div>
-              <div className="text-sm text-gray-500 font-medium">Blood Group</div>
-            </div>
-
-            <div className="bg-white/80 backdrop-blur-lg rounded-2xl shadow-xl border border-gray-100 p-6 transform hover:scale-105 transition-all duration-300">
-              <div className="flex items-center justify-between mb-4">
-                <div className={`w-12 h-12 ${bmiCategory.bgColor} rounded-xl flex items-center justify-center shadow-lg`}>
-                  <Weight className="w-6 h-6 text-white" />
-                </div>
-              </div>
-              <div className={`text-2xl font-black ${bmiCategory.color} mb-1`}>{bmi}</div>
-              <div className="text-sm text-gray-500 font-medium">BMI - {bmiCategory.text}</div>
-            </div>
-
-            <div className="bg-white/80 backdrop-blur-lg rounded-2xl shadow-xl border border-gray-100 p-6 transform hover:scale-105 transition-all duration-300">
-              <div className="flex items-center justify-between mb-4">
-                <div className="w-12 h-12 bg-gradient-to-r from-orange-500 to-orange-600 rounded-xl flex items-center justify-center shadow-lg">
-                  <AlertTriangle className="w-6 h-6 text-white" />
-                </div>
-              </div>
-              <div className="text-2xl font-black text-orange-600 mb-1">{profile.allergies.length}</div>
-              <div className="text-sm text-gray-500 font-medium">Known Allergies</div>
-            </div>
-
-            <div className="bg-white/80 backdrop-blur-lg rounded-2xl shadow-xl border border-gray-100 p-6 transform hover:scale-105 transition-all duration-300">
-              <div className="flex items-center justify-between mb-4">
-                <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
-                  <Activity className="w-6 h-6 text-white" />
-                </div>
-              </div>
-              <div className="text-2xl font-black text-purple-600 mb-1">{profile.chronicConditions.length}</div>
-              <div className="text-sm text-gray-500 font-medium">Conditions</div>
-            </div>
-          </div>
-
-          {/* Main Profile Content */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            
-            {/* Basic Information */}
-            <div className="lg:col-span-2 bg-white/80 backdrop-blur-lg rounded-3xl shadow-2xl border border-gray-100 p-8 transform hover:scale-105 transition-all duration-300">
-              <div className="flex items-center space-x-4 mb-8">
-                <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg transform hover:rotate-6 transition-transform duration-300">
-                  <User className="w-8 h-8 text-white" />
-                </div>
-                <div>
-                  <h2 className="text-3xl font-black text-gray-900">Basic Information</h2>
-                  <p className="text-gray-600">Personal details and contact information</p>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label className="block text-sm font-bold text-gray-700 uppercase tracking-wider">Full Name</label>
-                  {isEditing ? (
-                    <input
-                      type="text"
-                      value={tempProfile.fullName}
-                      onChange={(e) => handleInputChange('fullName', e.target.value)}
-                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white/80 backdrop-blur-sm"
-                    />
-                  ) : (
-                    <p className="text-xl font-bold text-gray-900 bg-gray-50 px-4 py-3 rounded-xl">{profile.fullName}</p>
-                  )}
-                </div>
-
-                <div className="space-y-2">
-                  <label className="block text-sm font-bold text-gray-700 uppercase tracking-wider">Age</label>
-                  {isEditing ? (
-                    <input
-                      type="number"
-                      value={tempProfile.age}
-                      onChange={(e) => handleInputChange('age', parseInt(e.target.value))}
-                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white/80 backdrop-blur-sm"
-                    />
-                  ) : (
-                    <p className="text-xl font-bold text-gray-900 bg-gray-50 px-4 py-3 rounded-xl">{profile.age} years</p>
-                  )}
-                </div>
-
-                <div className="space-y-2">
-                  <label className="block text-sm font-bold text-gray-700 uppercase tracking-wider">Gender</label>
-                  {isEditing ? (
-                    <select
-                      value={tempProfile.gender}
-                      onChange={(e) => handleInputChange('gender', e.target.value)}
-                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white/80 backdrop-blur-sm"
-                    >
-                      <option value="Male">Male</option>
-                      <option value="Female">Female</option>
-                      <option value="Other">Other</option>
-                    </select>
-                  ) : (
-                    <p className="text-xl font-bold text-gray-900 bg-gray-50 px-4 py-3 rounded-xl">{profile.gender}</p>
-                  )}
-                </div>
-
-                <div className="space-y-2">
-                  <label className="block text-sm font-bold text-gray-700 uppercase tracking-wider">Blood Group</label>
-                  {isEditing ? (
-                    <select
-                      value={tempProfile.bloodGroup}
-                      onChange={(e) => handleInputChange('bloodGroup', e.target.value)}
-                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white/80 backdrop-blur-sm"
-                    >
-                      <option value="A+">A+</option>
-                      <option value="A-">A-</option>
-                      <option value="B+">B+</option>
-                      <option value="B-">B-</option>
-                      <option value="AB+">AB+</option>
-                      <option value="AB-">AB-</option>
-                      <option value="O+">O+</option>
-                      <option value="O-">O-</option>
-                    </select>
-                  ) : (
-                    <div className="flex items-center space-x-3 bg-gray-50 px-4 py-3 rounded-xl">
-                      <Droplet className="w-5 h-5 text-red-500" />
-                      <p className="text-xl font-bold text-gray-900">{profile.bloodGroup}</p>
+                
+                <div className="space-y-4">
+                  {/* Upcoming Appointments */}
+                  <div className="bg-green-50 rounded-2xl p-6 border border-green-100">
+                    <div className="flex items-start space-x-4">
+                      <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
+                        <Clock className="w-6 h-6 text-green-600" />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="font-bold text-gray-900 mb-1">Dr. Priya Sharma - Cardiologist</h3>
+                        <p className="text-gray-600 mb-2">Regular Checkup</p>
+                        <div className="flex items-center space-x-4 text-sm text-gray-500">
+                          <span>Tomorrow, 10:30 AM</span>
+                          <span>•</span>
+                          <span>Online Consultation</span>
+                        </div>
+                      </div>
+                      <button className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors">
+                        Join
+                      </button>
                     </div>
-                  )}
-                </div>
-
-                <div className="space-y-2">
-                  <label className="block text-sm font-bold text-gray-700 uppercase tracking-wider">Phone Number</label>
-                  {isEditing ? (
-                    <input
-                      type="tel"
-                      value={tempProfile.phone}
-                      onChange={(e) => handleInputChange('phone', e.target.value)}
-                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white/80 backdrop-blur-sm"
-                    />
-                  ) : (
-                    <div className="flex items-center space-x-3 bg-gray-50 px-4 py-3 rounded-xl">
-                      <Phone className="w-5 h-5 text-blue-500" />
-                      <p className="text-xl font-bold text-gray-900">{profile.phone}</p>
+                  </div>
+                  
+                  {/* Past Appointments */}
+                  <div className="bg-gray-50 rounded-2xl p-6 border border-gray-100">
+                    <div className="flex items-start space-x-4">
+                      <div className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center">
+                        <CheckCircle className="w-6 h-6 text-gray-600" />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="font-bold text-gray-900 mb-1">Dr. Amit Kumar - General Physician</h3>
+                        <p className="text-gray-600 mb-2">Hypertension Follow-up</p>
+                        <div className="flex items-center space-x-4 text-sm text-gray-500">
+                          <span>Last Week, 2:00 PM</span>
+                          <span>•</span>
+                          <span>Completed</span>
+                        </div>
+                      </div>
+                      <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
+                        View Report
+                      </button>
                     </div>
-                  )}
+                  </div>
                 </div>
-
-                <div className="space-y-2">
-                  <label className="block text-sm font-bold text-gray-700 uppercase tracking-wider">Email</label>
-                  {isEditing ? (
-                    <input
-                      type="email"
-                      value={tempProfile.email}
-                      onChange={(e) => handleInputChange('email', e.target.value)}
-                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white/80 backdrop-blur-sm"
-                    />
-                  ) : (
-                    <div className="flex items-center space-x-3 bg-gray-50 px-4 py-3 rounded-xl">
-                      <Mail className="w-5 h-5 text-blue-500" />
-                      <p className="text-xl font-bold text-gray-900">{profile.email}</p>
-                    </div>
-                  )}
-                </div>
-
-                <div className="md:col-span-2 space-y-2">
-                  <label className="block text-sm font-bold text-gray-700 uppercase tracking-wider">Aadhaar Number</label>
-                  {isEditing ? (
-                    <input
-                      type="text"
-                      value={tempProfile.aadhaar}
-                      onChange={(e) => handleInputChange('aadhaar', e.target.value)}
-                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white/80 backdrop-blur-sm"
-                      placeholder="1234 5678 9012"
-                    />
-                  ) : (
-                    <div className="flex items-center space-x-3 bg-gray-50 px-4 py-3 rounded-xl">
-                      <CreditCard className="w-5 h-5 text-gray-500" />
-                      <p className="text-xl font-bold text-gray-900">{profile.aadhaar}</p>
-                    </div>
-                  )}
+                
+                <div className="mt-6 text-center">
+                  <button className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-xl hover:shadow-lg transform hover:scale-105 transition-all duration-300 font-medium">
+                    Book New Appointment
+                  </button>
                 </div>
               </div>
             </div>
+          )}
 
-            {/* Vitals Card */}
-            <div className="bg-white/80 backdrop-blur-lg rounded-3xl shadow-2xl border border-gray-100 p-8 transform hover:scale-105 transition-all duration-300">
-              <div className="flex items-center space-x-4 mb-8">
-                <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-lg transform hover:rotate-6 transition-transform duration-300">
-                  <Activity className="w-8 h-8 text-white" />
+          {/* Medical Reports Section */}
+          {activeSection === 'reports' && (
+            <div className="max-w-4xl mx-auto space-y-8">
+              <div className="bg-white/80 backdrop-blur-lg rounded-3xl shadow-xl border border-gray-100 p-8">
+                <div className="flex items-center space-x-3 mb-6">
+                  <div className="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center">
+                    <FileText className="w-6 h-6 text-purple-600" />
+                  </div>
+                  <h2 className="text-2xl font-bold text-gray-900">Medical Reports</h2>
                 </div>
-                <div>
-                  <h2 className="text-2xl font-black text-gray-900">Vitals</h2>
-                  <p className="text-gray-600">Health measurements</p>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="bg-blue-50 rounded-2xl p-6 border border-blue-100">
+                    <div className="flex items-center justify-between mb-4">
+                      <h3 className="font-bold text-blue-900">Blood Test Results</h3>
+                      <span className="text-xs text-blue-600 bg-blue-100 px-2 py-1 rounded-full">Latest</span>
+                    </div>
+                    <p className="text-sm text-blue-700 mb-4">Complete Blood Count - Normal ranges</p>
+                    <div className="flex justify-between items-center">
+                      <span className="text-xs text-blue-600">15 Dec 2024</span>
+                      <button className="text-blue-600 hover:text-blue-800 transition-colors">
+                        <Eye className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                  
+                  <div className="bg-green-50 rounded-2xl p-6 border border-green-100">
+                    <div className="flex items-center justify-between mb-4">
+                      <h3 className="font-bold text-green-900">ECG Report</h3>
+                      <span className="text-xs text-green-600 bg-green-100 px-2 py-1 rounded-full">Normal</span>
+                    </div>
+                    <p className="text-sm text-green-700 mb-4">Heart rhythm - Regular sinus rhythm</p>
+                    <div className="flex justify-between items-center">
+                      <span className="text-xs text-green-600">10 Dec 2024</span>
+                      <button className="text-green-600 hover:text-green-800 transition-colors">
+                        <Eye className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                  
+                  <div className="bg-orange-50 rounded-2xl p-6 border border-orange-100">
+                    <div className="flex items-center justify-between mb-4">
+                      <h3 className="font-bold text-orange-900">X-Ray Chest</h3>
+                      <span className="text-xs text-orange-600 bg-orange-100 px-2 py-1 rounded-full">Clear</span>
+                    </div>
+                    <p className="text-sm text-orange-700 mb-4">Chest X-ray - No abnormalities detected</p>
+                    <div className="flex justify-between items-center">
+                      <span className="text-xs text-orange-600">5 Dec 2024</span>
+                      <button className="text-orange-600 hover:text-orange-800 transition-colors">
+                        <Eye className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                  
+                  <div className="bg-purple-50 rounded-2xl p-6 border border-purple-100">
+                    <div className="flex items-center justify-between mb-4">
+                      <h3 className="font-bold text-purple-900">Prescription</h3>
+                      <span className="text-xs text-purple-600 bg-purple-100 px-2 py-1 rounded-full">Active</span>
+                    </div>
+                    <p className="text-sm text-purple-700 mb-4">Hypertension medications - 30 days</p>
+                    <div className="flex justify-between items-center">
+                      <span className="text-xs text-purple-600">1 Dec 2024</span>
+                      <button className="text-purple-600 hover:text-purple-800 transition-colors">
+                        <Eye className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="mt-6 text-center">
+                  <button className="bg-gradient-to-r from-purple-500 to-pink-600 text-white px-6 py-3 rounded-xl hover:shadow-lg transform hover:scale-105 transition-all duration-300 font-medium flex items-center space-x-2 mx-auto">
+                    <Upload className="w-4 h-4" />
+                    <span>Upload New Report</span>
+                  </button>
                 </div>
               </div>
+            </div>
+          )}
 
-              <div className="space-y-6">
-                <div className="space-y-2">
-                  <label className="block text-sm font-bold text-gray-700 uppercase tracking-wider">Height (cm)</label>
-                  {isEditing ? (
-                    <input
-                      type="number"
-                      value={tempProfile.height}
-                      onChange={(e) => handleInputChange('height', parseInt(e.target.value))}
-                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white/80 backdrop-blur-sm"
-                    />
-                  ) : (
-                    <div className="flex items-center space-x-3 bg-gradient-to-r from-blue-50 to-purple-50 px-4 py-4 rounded-xl">
-                      <Ruler className="w-6 h-6 text-blue-600" />
-                      <p className="text-3xl font-black text-gray-900">{profile.height} cm</p>
-                    </div>
-                  )}
+          {/* Prescriptions Section */}
+          {activeSection === 'prescriptions' && (
+            <div className="max-w-4xl mx-auto space-y-8">
+              <div className="bg-white/80 backdrop-blur-lg rounded-3xl shadow-xl border border-gray-100 p-8">
+                <div className="flex items-center space-x-3 mb-6">
+                  <div className="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center">
+                    <Pill className="w-6 h-6 text-green-600" />
+                  </div>
+                  <h2 className="text-2xl font-bold text-gray-900">My Prescriptions</h2>
                 </div>
-
-                <div className="space-y-2">
-                  <label className="block text-sm font-bold text-gray-700 uppercase tracking-wider">Weight (kg)</label>
-                  {isEditing ? (
-                    <input
-                      type="number"
-                      value={tempProfile.weight}
-                      onChange={(e) => handleInputChange('weight', parseInt(e.target.value))}
-                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white/80 backdrop-blur-sm"
-                    />
-                  ) : (
-                    <div className="flex items-center space-x-3 bg-gradient-to-r from-green-50 to-emerald-50 px-4 py-4 rounded-xl">
-                      <Weight className="w-6 h-6 text-green-600" />
-                      <p className="text-3xl font-black text-gray-900">{profile.weight} kg</p>
+                
+                <div className="space-y-6">
+                  {/* Active Prescription */}
+                  <div className="bg-green-50 rounded-2xl p-6 border border-green-100">
+                    <div className="flex items-start justify-between mb-4">
+                      <div>
+                        <h3 className="font-bold text-green-900 mb-1">Current Medications</h3>
+                        <p className="text-sm text-green-700">Prescribed by Dr. Amit Kumar</p>
+                      </div>
+                      <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-medium">Active</span>
                     </div>
-                  )}
+                    
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between bg-white/80 p-4 rounded-lg">
+                        <div>
+                          <p className="font-medium text-gray-900">Amlodipine 5mg</p>
+                          <p className="text-sm text-gray-600">Once daily, morning</p>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-sm font-medium text-gray-900">15 days left</p>
+                          <p className="text-xs text-gray-500">Refill due: 30 Dec</p>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-center justify-between bg-white/80 p-4 rounded-lg">
+                        <div>
+                          <p className="font-medium text-gray-900">Vitamin D3</p>
+                          <p className="text-sm text-gray-600">Weekly, 60,000 IU</p>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-sm font-medium text-gray-900">8 weeks left</p>
+                          <p className="text-xs text-gray-500">Next dose: 22 Dec</p>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="mt-4 flex space-x-3">
+                      <button className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors text-sm">
+                        Request Refill
+                      </button>
+                      <button className="bg-white text-green-600 border border-green-300 px-4 py-2 rounded-lg hover:bg-green-50 transition-colors text-sm">
+                        Set Reminder
+                      </button>
+                    </div>
+                  </div>
+                  
+                  {/* Previous Prescriptions */}
+                  <div className="bg-gray-50 rounded-2xl p-6 border border-gray-100">
+                    <div className="flex items-start justify-between mb-4">
+                      <div>
+                        <h3 className="font-bold text-gray-900 mb-1">Previous Prescription</h3>
+                        <p className="text-sm text-gray-600">Prescribed by Dr. Priya Sharma</p>
+                      </div>
+                      <span className="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-xs font-medium">Completed</span>
+                    </div>
+                    
+                    <div className="bg-white/80 p-4 rounded-lg">
+                      <p className="font-medium text-gray-900 mb-1">Paracetamol 500mg</p>
+                      <p className="text-sm text-gray-600">3 times daily for 5 days - Completed on 1 Dec 2024</p>
+                    </div>
+                  </div>
                 </div>
+                
+                <div className="mt-6 text-center">
+                  <button className="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-6 py-3 rounded-xl hover:shadow-lg transform hover:scale-105 transition-all duration-300 font-medium flex items-center space-x-2 mx-auto">
+                    <Calendar className="w-4 h-4" />
+                    <span>Medication Schedule</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
 
-                <div className="pt-6 border-t-2 border-gray-200">
-                  <label className="block text-sm font-bold text-gray-700 uppercase tracking-wider mb-3">BMI</label>
-                  <div className={`bg-gradient-to-r from-${bmiCategory.bgColor.split('-')[1]}-50 to-${bmiCategory.bgColor.split('-')[1]}-100 px-6 py-6 rounded-2xl text-center`}>
-                    <p className="text-4xl font-black text-gray-900 mb-2">{bmi}</p>
-                    <p className={`text-lg font-bold ${bmiCategory.color}`}>{bmiCategory.text}</p>
+          {/* Settings Section */}
+          {activeSection === 'settings' && (
+            <div className="max-w-4xl mx-auto space-y-8">
+              <div className="bg-white/80 backdrop-blur-lg rounded-3xl shadow-xl border border-gray-100 p-8">
+                <div className="flex items-center space-x-3 mb-6">
+                  <div className="w-10 h-10 bg-gray-100 rounded-xl flex items-center justify-center">
+                    <Settings className="w-6 h-6 text-gray-600" />
+                  </div>
+                  <h2 className="text-2xl font-bold text-gray-900">Settings</h2>
+                </div>
+                
+                <div className="space-y-6">
+                  {/* Notification Settings */}
+                  <div className="bg-blue-50 rounded-2xl p-6 border border-blue-100">
+                    <h3 className="font-bold text-blue-900 mb-4">Notification Preferences</h3>
+                    <div className="space-y-3">
+                      <label className="flex items-center space-x-3 cursor-pointer">
+                        <input type="checkbox" defaultChecked className="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
+                        <span className="text-blue-800">Appointment reminders</span>
+                      </label>
+                      <label className="flex items-center space-x-3 cursor-pointer">
+                        <input type="checkbox" defaultChecked className="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
+                        <span className="text-blue-800">Medication reminders</span>
+                      </label>
+                      <label className="flex items-center space-x-3 cursor-pointer">
+                        <input type="checkbox" className="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
+                        <span className="text-blue-800">Health tips and articles</span>
+                      </label>
+                    </div>
+                  </div>
+                  
+                  {/* Privacy Settings */}
+                  <div className="bg-purple-50 rounded-2xl p-6 border border-purple-100">
+                    <h3 className="font-bold text-purple-900 mb-4">Privacy & Security</h3>
+                    <div className="space-y-3">
+                      <button className="w-full text-left bg-white/80 p-4 rounded-lg hover:bg-white transition-colors flex items-center justify-between">
+                        <span className="text-purple-800">Change Password</span>
+                        <span className="text-purple-600">›</span>
+                      </button>
+                      <button className="w-full text-left bg-white/80 p-4 rounded-lg hover:bg-white transition-colors flex items-center justify-between">
+                        <span className="text-purple-800">Two-Factor Authentication</span>
+                        <span className="text-purple-600">›</span>
+                      </button>
+                      <button className="w-full text-left bg-white/80 p-4 rounded-lg hover:bg-white transition-colors flex items-center justify-between">
+                        <span className="text-purple-800">Data Export</span>
+                        <span className="text-purple-600">›</span>
+                      </button>
+                    </div>
+                  </div>
+                  
+                  {/* App Settings */}
+                  <div className="bg-green-50 rounded-2xl p-6 border border-green-100">
+                    <h3 className="font-bold text-green-900 mb-4">App Preferences</h3>
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium text-green-800 mb-2">Language</label>
+                        <select className="w-full p-3 border border-green-200 rounded-lg focus:ring-2 focus:ring-green-500 bg-white">
+                          <option>English</option>
+                          <option>Hindi</option>
+                          <option>Bengali</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-green-800 mb-2">Theme</label>
+                        <select className="w-full p-3 border border-green-200 rounded-lg focus:ring-2 focus:ring-green-500 bg-white">
+                          <option>Light Mode</option>
+                          <option>Dark Mode</option>
+                          <option>System Default</option>
+                        </select>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
+          )}
 
-            {/* Medical Information */}
-            <div className="lg:col-span-3 bg-white/80 backdrop-blur-lg rounded-3xl shadow-2xl border border-gray-100 p-8 transform hover:scale-105 transition-all duration-300">
-              <div className="flex items-center space-x-4 mb-8">
-                <div className="w-16 h-16 bg-gradient-to-r from-red-500 to-pink-600 rounded-2xl flex items-center justify-center shadow-lg transform hover:rotate-6 transition-transform duration-300">
-                  <Heart className="w-8 h-8 text-white" />
+          {/* Sign Out confirmation would typically be handled here */}
+          {activeSection === 'signout' && (
+            <div className="max-w-2xl mx-auto">
+              <div className="bg-white/80 backdrop-blur-lg rounded-3xl shadow-xl border border-gray-100 p-8 text-center">
+                <div className="w-16 h-16 bg-red-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                  <LogOut className="w-8 h-8 text-red-600" />
                 </div>
-                <div>
-                  <h2 className="text-3xl font-black text-gray-900">Medical Information</h2>
-                  <p className="text-gray-600">Health conditions and medications</p>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <div className="space-y-4">
-                  <label className="block text-sm font-bold text-gray-700 uppercase tracking-wider">Allergies</label>
-                  {isEditing ? (
-                    <textarea
-                      value={tempProfile.allergies.join(', ')}
-                      onChange={(e) => handleArrayChange('allergies', e.target.value)}
-                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white/80 backdrop-blur-sm h-24"
-                      placeholder="Separate multiple allergies with commas"
-                    />
-                  ) : (
-                    <div className="space-y-3">
-                      {profile.allergies.length > 0 ? profile.allergies.map((allergy, index) => (
-                        <div key={index} className="flex items-center space-x-3 bg-gradient-to-r from-orange-50 to-red-50 px-4 py-3 rounded-xl">
-                          <AlertTriangle className="w-5 h-5 text-orange-500" />
-                          <span className="text-lg font-semibold text-gray-900">{allergy}</span>
-                        </div>
-                      )) : (
-                        <p className="text-gray-500 italic bg-gray-50 px-4 py-3 rounded-xl">No known allergies</p>
-                      )}
-                    </div>
-                  )}
-                </div>
-
-                <div className="space-y-4">
-                  <label className="block text-sm font-bold text-gray-700 uppercase tracking-wider">Chronic Conditions</label>
-                  {isEditing ? (
-                    <div className="space-y-3 max-h-32 overflow-y-auto bg-gray-50 p-4 rounded-xl">
-                      {chronicConditionsOptions.map(condition => (
-                        <label key={condition} className="flex items-center space-x-3 cursor-pointer hover:bg-white px-3 py-2 rounded-lg transition-colors">
-                          <input
-                            type="checkbox"
-                            checked={tempProfile.chronicConditions.includes(condition)}
-                            onChange={(e) => {
-                              if (e.target.checked) {
-                                setTempProfile(prev => ({
-                                  ...prev,
-                                  chronicConditions: [...prev.chronicConditions, condition]
-                                }));
-                              } else {
-                                setTempProfile(prev => ({
-                                  ...prev,
-                                  chronicConditions: prev.chronicConditions.filter(c => c !== condition)
-                                }));
-                              }
-                            }}
-                            className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 w-4 h-4"
-                          />
-                          <span className="text-sm font-medium">{condition}</span>
-                        </label>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="space-y-3">
-                      {profile.chronicConditions.length > 0 ? profile.chronicConditions.map((condition, index) => (
-                        <div key={index} className="inline-block">
-                          <span className="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-full text-sm font-semibold mr-2 mb-2 inline-block shadow-lg transform hover:scale-105 transition-transform">
-                            {condition}
-                          </span>
-                        </div>
-                      )) : (
-                        <p className="text-gray-500 italic bg-gray-50 px-4 py-3 rounded-xl">No chronic conditions</p>
-                      )}
-                    </div>
-                  )}
-                </div>
-
-                <div className="lg:col-span-2 space-y-4">
-                  <label className="block text-sm font-bold text-gray-700 uppercase tracking-wider">Current Medications</label>
-                  {isEditing ? (
-                    <textarea
-                      value={tempProfile.currentMedications}
-                      onChange={(e) => handleInputChange('currentMedications', e.target.value)}
-                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white/80 backdrop-blur-sm h-32"
-                      placeholder="List current medications and dosages"
-                    />
-                  ) : (
-                    <div className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-2xl p-6 border-2 border-purple-100">
-                      <div className="flex items-start space-x-3">
-                        <Pill className="w-6 h-6 text-purple-600 mt-1" />
-                        <p className="text-lg text-gray-900 font-medium leading-relaxed">{profile.currentMedications || 'No current medications'}</p>
-                      </div>
-                    </div>
-                  )}
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">Sign Out</h2>
+                <p className="text-gray-600 mb-8">Are you sure you want to sign out of your VedSeva account?</p>
+                <div className="flex space-x-4 justify-center">
+                  <button 
+                    onClick={() => setActiveSection('profile')}
+                    className="bg-gray-500 text-white px-6 py-3 rounded-xl hover:bg-gray-600 transition-colors font-medium"
+                  >
+                    Cancel
+                  </button>
+                  <button className="bg-red-500 text-white px-6 py-3 rounded-xl hover:bg-red-600 transition-colors font-medium" onClick={() => navigate("/")}>
+                    Sign Out
+                  </button>
                 </div>
               </div>
             </div>
-
-            {/* Emergency Contact */}
-            <div className="lg:col-span-3 bg-white/80 backdrop-blur-lg rounded-3xl shadow-2xl border border-gray-100 p-8 transform hover:scale-105 transition-all duration-300">
-              <div className="flex items-center space-x-4 mb-8">
-                <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-red-600 rounded-2xl flex items-center justify-center shadow-lg transform hover:rotate-6 transition-transform duration-300">
-                  <Users className="w-8 h-8 text-white" />
-                </div>
-                <div>
-                  <h2 className="text-3xl font-black text-gray-900">Emergency Contact</h2>
-                  <p className="text-gray-600">Important contact in case of emergency</p>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="space-y-2">
-                  <label className="block text-sm font-bold text-gray-700 uppercase tracking-wider">Name</label>
-                  {isEditing ? (
-                    <input
-                      type="text"
-                      value={tempProfile.emergencyName}
-                      onChange={(e) => handleInputChange('emergencyName', e.target.value)}
-                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white/80 backdrop-blur-sm"
-                    />
-                  ) : (
-                    <div className="flex items-center space-x-3 bg-gradient-to-r from-orange-50 to-red-50 px-4 py-3 rounded-xl">
-                      <UserCheck className="w-5 h-5 text-orange-600" />
-                      <p className="text-xl font-bold text-gray-900">{profile.emergencyName}</p>
-                    </div>
-                  )}
-                </div>
-
-                <div className="space-y-2">
-                  <label className="block text-sm font-bold text-gray-700 uppercase tracking-wider">Relation</label>
-                  {isEditing ? (
-                    <select
-                      value={tempProfile.emergencyRelation}
-                      onChange={(e) => handleInputChange('emergencyRelation', e.target.value)}
-                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white/80 backdrop-blur-sm"
-                    >
-                      <option value="Spouse">Spouse</option>
-                      <option value="Parent">Parent</option>
-                      <option value="Child">Child</option>
-                      <option value="Sibling">Sibling</option>
-                      <option value="Friend">Friend</option>
-                      <option value="Other">Other</option>
-                    </select>
-                  ) : (
-                    <div className="flex items-center space-x-3 bg-gradient-to-r from-purple-50 to-blue-50 px-4 py-3 rounded-xl">
-                      <Heart className="w-5 h-5 text-purple-600" />
-                      <p className="text-xl font-bold text-gray-900">{profile.emergencyRelation}</p>
-                    </div>
-                  )}
-                </div>
-
-                <div className="space-y-2">
-                  <label className="block text-sm font-bold text-gray-700 uppercase tracking-wider">Phone Number</label>
-                  {isEditing ? (
-                    <input
-                      type="tel"
-                      value={tempProfile.emergencyPhone}
-                      onChange={(e) => handleInputChange('emergencyPhone', e.target.value)}
-                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white/80 backdrop-blur-sm"
-                    />
-                  ) : (
-                    <div className="flex items-center space-x-3 bg-gradient-to-r from-green-50 to-emerald-50 px-4 py-3 rounded-xl">
-                      <Phone className="w-5 h-5 text-green-600" />
-                      <p className="text-xl font-bold text-gray-900">{profile.emergencyPhone}</p>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Security Badge */}
-          <div className="mt-12 flex items-center justify-center">
-            <div className="flex items-center space-x-3 bg-white/80 backdrop-blur-lg px-6 py-3 rounded-2xl shadow-lg border border-gray-100">
-              <Shield className="w-5 h-5 text-green-500" />
-              <span className="text-sm font-semibold text-gray-700">Your data is protected with 256-bit SSL encryption</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Floating Elements */}
-        <div className="absolute -top-4 -right-4 w-24 h-24 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full opacity-20 animate-pulse"></div>
-        <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-gradient-to-r from-green-500 to-blue-500 rounded-full opacity-10 animate-pulse" style={{animationDelay: '1s'}}></div>
-        <div className="absolute top-1/3 -right-8 w-20 h-20 bg-gradient-to-r from-orange-500 to-red-500 rounded-full opacity-15 animate-pulse" style={{animationDelay: '2s'}}></div>
-      </section>
-
-      {/* Footer */}
-      <Footer/>
+          )}
+        </main>
+      </div>
+      
+      <Footer />
     </div>
   );
-};
-
-export default VedsevaPatientProfile;
+}

@@ -8,6 +8,7 @@ import DoctorProfileDashboard from "./app/DoctorProfile";
 import VedsevaPatientProfile from "./app/PatientProfile";
 import NurseProfile from "./app/NurseProfile";
 import NGODashboard from "./app/NGOProfile";
+import BookAppointmentPage from "./app/BookAppoinment";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/patient-profile" element={<VedsevaPatientProfile />} />
         <Route path="/nurse-profile" element={<NurseProfile />} />
         <Route path="/NGO-profile" element={<NGODashboard />} />
+        <Route path="/book-appointment" element={<BookAppointmentPage />} />
       </Routes>
     </BrowserRouter>
   );
