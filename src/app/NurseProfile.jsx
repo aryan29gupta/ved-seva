@@ -50,7 +50,7 @@ export default function NurseProfile() {
   // Sample nurse data
   const [nurseData, setNurseData] = useState({
     // Basic Info
-    name: "Sarah Johnson",
+    name: "Priya Patel",
     photo: "/api/placeholder/150/150",
     gender: "Female",
     dob: "1990-05-15",
@@ -90,7 +90,7 @@ export default function NurseProfile() {
       phone: "+91 98765 12345",
       relation: "Supervising Doctor"
     },
-    reportingDoctor: "Dr. Priya Sharma",
+    reportingDoctor: "Dr. Sumitha Sharma",
     
     // Security
     loginId: "sarah.johnson",
@@ -247,22 +247,6 @@ export default function NurseProfile() {
                       </span>
                     </div>
                   </div>
-                  <button
-                    onClick={() => setIsEditing(!isEditing)}
-                    className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-3 rounded-xl hover:shadow-xl transform hover:scale-105 transition-all duration-300 font-semibold"
-                  >
-                    {isEditing ? (
-                      <>
-                        <Save className="w-5 h-5 inline mr-2" />
-                        Save Changes
-                      </>
-                    ) : (
-                      <>
-                        <Edit3 className="w-5 h-5 inline mr-2" />
-                        Edit Profile
-                      </>
-                    )}
-                  </button>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">

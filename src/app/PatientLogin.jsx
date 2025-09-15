@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import Footer from '../components/ui/footer';
 import { useNavigate } from "react-router-dom";
+import { supabase } from '../supabaseClient';
 
 export default function PatientLoginPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -299,7 +300,7 @@ export default function PatientLoginPage() {
                 <div className="mt-8 text-center space-y-2">
                   <p className="text-sm text-gray-600">
                     Don't have an account?{' '}
-                    <button className="font-medium text-blue-600 hover:text-blue-500 transition-colors duration-200">
+                    <button className="font-medium text-blue-600 hover:text-blue-500 transition-colors duration-200" onClick={() => navigate("/patient-signup")}>
                       Register Here
                     </button>
                   </p>

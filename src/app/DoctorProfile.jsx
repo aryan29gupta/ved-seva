@@ -30,6 +30,7 @@ import {
   Star
 } from "lucide-react";
 import Footer from '../components/ui/footer';
+import AppointmentsSection from './DoctorAppointment';
 
 export default function DoctorProfileDashboard() {
   const [activeSection, setActiveSection] = useState('profile');
@@ -511,14 +512,18 @@ export default function DoctorProfileDashboard() {
           )}
 
           {/* Other sections can be implemented similarly */}
-          {activeSection !== 'profile' && (
-            <div className="max-w-4xl mx-auto">
-              <div className="bg-white/80 backdrop-blur-lg rounded-3xl shadow-xl border border-gray-100 p-8 text-center">
-                <h2 className="text-2xl font-bold text-gray-900 mb-4 capitalize">{activeSection}</h2>
-                <p className="text-gray-600">This section is under development.</p>
-              </div>
-            </div>
-          )}
+          {/* Appointments Section */}
+          {activeSection === 'appointments' && <AppointmentsSection />}
+
+          {/* Other sections */}
+          {activeSection !== 'profile' && activeSection !== 'appointments' && (
+          <div className="max-w-4xl mx-auto">
+            <div className="bg-white/80 backdrop-blur-lg rounded-3xl shadow-xl border border-gray-100 p-8 text-center">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4 capitalize">{activeSection}</h2>
+            <p className="text-gray-600">This section is under development.</p>
+          </div>
+  </div>
+)}
         </main>
       </div>
       <Footer/>

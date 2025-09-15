@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import Footer from '../components/ui/footer';
 import { useNavigate } from "react-router-dom";
+import { supabase } from '../supabaseClient';
 
 export default function NurseLoginPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -47,14 +48,29 @@ export default function NurseLoginPage() {
     setErrors({});
     setIsLoading(true);
     
-    // Simulate login process
-    setTimeout(() => {
-      setIsLoading(false);
-      // Handle successful login logic here
-      console.log('Login attempt:', { username, password, rememberMe });
-      navigate("/nurse-profile");
-    }, 2000);
-  };
+    try {
+        // Query Supabase table for matching username + password
+        const { data, error } = await supabase
+          .from("doctor") // 👈 replace with your actual table name
+          .select("*")
+          .eq("username", username)
+          .eq("password", password)
+          .maybeSingle();
+    
+          if (error || !data) {
+          console.error("Login failed:", error);
+          setErrors({ general: "Invalid username or password" });
+        } else {
+          localStorage.setItem("doctor", JSON.stringify(data));
+          navigate("/nurse-profile");
+        }
+      } catch (err) {
+        console.error("Login error:", err);
+        setErrors({ general: "Something went wrong. Try again." });
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
