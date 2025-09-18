@@ -49,28 +49,52 @@ export default function DoctorLoginPage() {
     setIsLoading(true);
     
     try {
-    // Query Supabase table for matching username + password
-    const { data, error } = await supabase
-      .from("doctor") // 👈 replace with your actual table name
-      .select("*")
-      .eq("username", username)
-      .eq("password", password)
-      .maybeSingle();
+      // Query Supabase table for matching username + password
+      const { data, error } = await supabase
+        .from("doctor")
+        .select("*")
+        .eq("username", username)
+        .eq("password", password)
+        .maybeSingle();
 
       if (error || !data) {
-      console.error("Login failed:", error);
-      setErrors({ general: "Invalid username or password" });
-    } else {
-      localStorage.setItem("doctor", JSON.stringify(data));
-      navigate("/doctor-profile");
+        console.error("Login failed:", error);
+        setErrors({ general: "Invalid username or password" });
+      } else {
+        // Store complete doctor data in localStorage with enhanced mapping
+        const doctorData = {
+          id: data.id,
+          username: data.username,
+          fullName: data.name ? `Dr. ${data.name}` : "Dr. Unknown",
+          name: data.name,
+          email: data.email || "",
+          contactNumber: data.phone || "",
+          specialization: data.specialization || "General Medicine",
+          city: data.city || "",
+          gender: data.gender || "Male",
+          experience: data.experience?.toString() || "0",
+          education: data.education || "MBBS",
+          affiliation: data.hospital || data.clinic || "",
+          consultationType: data.consultation_type || "Hybrid",
+          consultationFee: data.consultation_fee?.toString() || "1500",
+          bio: data.bio || "Experienced healthcare professional dedicated to providing quality medical care.",
+          isVerified: data.is_verified !== undefined ? data.is_verified : true,
+          specializations: data.specialization ? [data.specialization] : ["General Medicine"],
+          loginTimestamp: new Date().toISOString()
+        };
+        
+        localStorage.setItem("doctorData", JSON.stringify(doctorData));
+        localStorage.setItem("doctor", JSON.stringify(data)); // for backward compatibility
+        
+        navigate("/doctor-profile");
+      }
+    } catch (err) {
+      console.error("Login error:", err);
+      setErrors({ general: "Something went wrong. Try again." });
+    } finally {
+      setIsLoading(false);
     }
-  } catch (err) {
-    console.error("Login error:", err);
-    setErrors({ general: "Something went wrong. Try again." });
-  } finally {
-    setIsLoading(false);
-  }
-};
+  };
 
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
@@ -207,6 +231,13 @@ export default function DoctorLoginPage() {
                   <h2 className="text-3xl font-black text-gray-900 mb-2">Doctor Login</h2>
                   <p className="text-gray-600">Access your medical dashboard</p>
                 </div>
+
+                {/* Error Message */}
+                {errors.general && (
+                  <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+                    <p className="text-sm text-red-600">{errors.general}</p>
+                  </div>
+                )}
 
                 {/* Login Form */}
                 <div className="space-y-6">

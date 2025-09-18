@@ -48,13 +48,36 @@ export default function PatientLoginPage() {
     setErrors({});
     setIsLoading(true);
     
-    // Simulate login process
-    setTimeout(() => {
-      setIsLoading(false);
-      // Handle successful login logic here
-      console.log('Login attempt:', { username, password, rememberMe });
-      navigate("/patient-profile");
-    }, 2000);
+    try {
+  const { data: userData, error: fetchError } = await supabase
+    .from('patient')
+    .select('*')
+    .eq('aadharno', Number(username.trim()))  // convert Aadhaar to number
+    .eq('password', Number(password))         // convert password to number
+    .single();
+
+  if (fetchError || !userData) {
+    setErrors({ username: 'Invalid Aadhaar number or password' });
+    setIsLoading(false);
+    return;
+  }
+
+  // Store user data in localStorage for the profile page
+  localStorage.setItem('currentPatient', JSON.stringify(userData));
+
+  if (rememberMe) {
+    localStorage.setItem('rememberPatient', 'true');
+  }
+
+  setIsLoading(false);
+  navigate("/patient-profile");
+
+} catch (error) {
+  console.error('Login error:', error);
+  setErrors({ username: 'Login failed. Please try again.' });
+  setIsLoading(false);
+}
+
   };
 
   const handleKeyPress = (e) => {

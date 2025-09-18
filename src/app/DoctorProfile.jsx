@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Heart,
   Shield,
@@ -36,76 +36,179 @@ export default function DoctorProfileDashboard() {
   const [activeSection, setActiveSection] = useState('profile');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [editMode, setEditMode] = useState({});
-  const [profileData, setProfileData] = useState({
-    // Header Card
-    profilePhoto: null,
-    fullName: "Dr. Rajesh Kumar",
-    specialization: "Cardiologist",
-    isVerified: true,
+
+  // Initialize profile data from localStorage or use defaults
+  const [profileData, setProfileData] = useState(() => {
+    // Load data from localStorage if available
+    const storedData = localStorage.getItem("doctorData");
     
-    // Personal Information
-    gender: "Male",
-    contactNumber: "+91 98765 43210",
-    email: "rajesh@gmail.com",
-    city: "New Delhi",
+    if (storedData) {
+      try {
+        const parsedData = JSON.parse(storedData);
+        return {
+          // Header Card
+          profilePhoto: null,
+          fullName: parsedData.fullName || parsedData.name || "Dr. Unknown",
+          specialization: parsedData.specialization || "General Medicine",
+          isVerified: parsedData.isVerified !== undefined ? parsedData.isVerified : true,
+          
+          // Personal Information
+          gender: parsedData.gender || "Male",
+          contactNumber: parsedData.contactNumber || "",
+          email: parsedData.email || "",
+          city: parsedData.city || "",
+          
+          // Professional Information
+          education: parsedData.education || "MBBS",
+          specializations: parsedData.specializations || [parsedData.specialization || "General Medicine"],
+          experience: parsedData.experience || "0",
+          affiliation: parsedData.affiliation || "",
+          
+          // Practice Settings
+          consultationType: parsedData.consultationType || "Hybrid",
+          consultationFee: parsedData.consultationFee || "1500",
+          availability: {
+            monday: { start: "09:00", end: "17:00", available: true },
+            tuesday: { start: "09:00", end: "17:00", available: true },
+            wednesday: { start: "09:00", end: "17:00", available: true },
+            thursday: { start: "09:00", end: "17:00", available: true },
+            friday: { start: "09:00", end: "17:00", available: true },
+            saturday: { start: "09:00", end: "13:00", available: true },
+            sunday: { start: "", end: "", available: false }
+          },
+          
+          // About Me
+          bio: parsedData.bio || "Experienced healthcare professional dedicated to providing quality medical care."
+        };
+      } catch (error) {
+        console.error("Error parsing stored doctor data:", error);
+      }
+    }
     
-    // Professional Information
-    education: "MBBS, MD (Cardiology)",
-    specializations: ["Cardiology", "Interventional Cardiology"],
-    experience: "12",
-    affiliation: "AIIMS New Delhi",
-    
-    // Practice Settings
-    consultationType: "Hybrid",
-    consultationFee: "1500",
-    availability: {
-      monday: { start: "09:00", end: "17:00", available: true },
-      tuesday: { start: "09:00", end: "17:00", available: true },
-      wednesday: { start: "09:00", end: "17:00", available: true },
-      thursday: { start: "09:00", end: "17:00", available: true },
-      friday: { start: "09:00", end: "17:00", available: true },
-      saturday: { start: "09:00", end: "13:00", available: true },
-      sunday: { start: "", end: "", available: false }
-    },
-    
-    // About Me
-    bio: "Experienced cardiologist with over 12 years of practice in interventional cardiology. Specialized in complex cardiac procedures and preventive cardiology. Committed to providing comprehensive cardiac care using the latest medical technologies and evidence-based treatments."
+    // Fallback default data if no stored data
+    return {
+      // Header Card
+      profilePhoto: null,
+      fullName: "Dr. Rajesh Kumar",
+      specialization: "Cardiologist",
+      isVerified: true,
+      
+      // Personal Information
+      gender: "Male",
+      contactNumber: "+91 98765 43210",
+      email: "rajesh@gmail.com",
+      city: "New Delhi",
+      
+      // Professional Information
+      education: "MBBS, MD (Cardiology)",
+      specializations: ["Cardiology", "Interventional Cardiology"],
+      experience: "12",
+      affiliation: "AIIMS New Delhi",
+      
+      // Practice Settings
+      consultationType: "Hybrid",
+      consultationFee: "1500",
+      availability: {
+        monday: { start: "09:00", end: "17:00", available: true },
+        tuesday: { start: "09:00", end: "17:00", available: true },
+        wednesday: { start: "09:00", end: "17:00", available: true },
+        thursday: { start: "09:00", end: "17:00", available: true },
+        friday: { start: "09:00", end: "17:00", available: true },
+        saturday: { start: "09:00", end: "13:00", available: true },
+        sunday: { start: "", end: "", available: false }
+      },
+      
+      // About Me
+      bio: "Experienced cardiologist with over 12 years of practice in interventional cardiology. Specialized in complex cardiac procedures and preventive cardiology. Committed to providing comprehensive cardiac care using the latest medical technologies and evidence-based treatments."
+    };
   });
+
+  // Load doctor data when component mounts
+  useEffect(() => {
+    const loadDoctorData = () => {
+      const storedData = localStorage.getItem("doctorData");
+      
+      if (storedData) {
+        try {
+          const parsedData = JSON.parse(storedData);
+          
+          setProfileData(prevData => ({
+            ...prevData,
+            fullName: parsedData.fullName || parsedData.name || prevData.fullName,
+            email: parsedData.email || prevData.email,
+            contactNumber: parsedData.contactNumber || prevData.contactNumber,
+            specialization: parsedData.specialization || prevData.specialization,
+            city: parsedData.city || prevData.city,
+            gender: parsedData.gender || prevData.gender,
+            experience: parsedData.experience || prevData.experience,
+            education: parsedData.education || prevData.education,
+            affiliation: parsedData.affiliation || prevData.affiliation,
+            consultationType: parsedData.consultationType || prevData.consultationType,
+            consultationFee: parsedData.consultationFee || prevData.consultationFee,
+            bio: parsedData.bio || prevData.bio,
+            isVerified: parsedData.isVerified !== undefined ? parsedData.isVerified : prevData.isVerified,
+            specializations: parsedData.specializations || [parsedData.specialization || prevData.specialization]
+          }));
+        } catch (error) {
+          console.error("Error loading doctor data:", error);
+        }
+      }
+    };
+
+    loadDoctorData();
+  }, []);
+
+  // Save profile data to localStorage when updated
+  const saveProfileData = (updatedData) => {
+    try {
+      const currentData = JSON.parse(localStorage.getItem("doctorData") || "{}");
+      const mergedData = { ...currentData, ...updatedData };
+      localStorage.setItem("doctorData", JSON.stringify(mergedData));
+    } catch (error) {
+      console.error("Error saving profile data:", error);
+    }
+  };
 
   const toggleEdit = (section) => {
     setEditMode(prev => ({ ...prev, [section]: !prev[section] }));
   };
 
   const handleInputChange = (field, value) => {
-    setProfileData(prev => ({ ...prev, [field]: value }));
+    const updatedData = { [field]: value };
+    setProfileData(prev => ({ ...prev, ...updatedData }));
+    saveProfileData(updatedData);
   };
 
   const handleSpecializationChange = (index, value) => {
     const newSpecs = [...profileData.specializations];
     newSpecs[index] = value;
-    setProfileData(prev => ({ ...prev, specializations: newSpecs }));
+    const updatedData = { specializations: newSpecs };
+    setProfileData(prev => ({ ...prev, ...updatedData }));
+    saveProfileData(updatedData);
   };
 
   const addSpecialization = () => {
-    setProfileData(prev => ({
-      ...prev,
-      specializations: [...prev.specializations, ""]
-    }));
+    const newSpecs = [...profileData.specializations, ""];
+    const updatedData = { specializations: newSpecs };
+    setProfileData(prev => ({ ...prev, ...updatedData }));
+    saveProfileData(updatedData);
   };
 
   const removeSpecialization = (index) => {
     const newSpecs = profileData.specializations.filter((_, i) => i !== index);
-    setProfileData(prev => ({ ...prev, specializations: newSpecs }));
+    const updatedData = { specializations: newSpecs };
+    setProfileData(prev => ({ ...prev, ...updatedData }));
+    saveProfileData(updatedData);
   };
 
   const handleAvailabilityChange = (day, field, value) => {
-    setProfileData(prev => ({
-      ...prev,
-      availability: {
-        ...prev.availability,
-        [day]: { ...prev.availability[day], [field]: value }
-      }
-    }));
+    const updatedAvailability = {
+      ...profileData.availability,
+      [day]: { ...profileData.availability[day], [field]: value }
+    };
+    const updatedData = { availability: updatedAvailability };
+    setProfileData(prev => ({ ...prev, ...updatedData }));
+    saveProfileData(updatedData);
   };
 
   const sidebarItems = [
@@ -181,9 +284,13 @@ export default function DoctorProfileDashboard() {
               </button>
               <div className="flex items-center space-x-3">
                 <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                  <span className="text-white text-sm font-semibold">RK</span>
+                  <span className="text-white text-sm font-semibold">
+                    {profileData.fullName.split(' ').map(n => n[0]).join('').slice(0, 2)}
+                  </span>
                 </div>
-                <span className="hidden sm:block text-sm font-medium text-gray-700">Dr. Rajesh Kumar</span>
+                <span className="hidden sm:block text-sm font-medium text-gray-700">
+                  {profileData.fullName}
+                </span>
               </div>
             </div>
           </div>

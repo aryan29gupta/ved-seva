@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Heart,
   Shield,
@@ -49,40 +49,95 @@ export default function PatientProfileDashboard() {
   const [activeSection, setActiveSection] = useState('profile');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [editMode, setEditMode] = useState({});
+  
+  // Initialize state with default values
   const [profileData, setProfileData] = useState({
     // Header Card
     profilePhoto: null,
-    fullName: "Suresh Kishor",
-    age: 34,
-    patientId: "VS-PT-12345",
+    fullName: "",
+    age: 0,
+    patientId: "",
     isVerified: true,
     
     // Personal Information
-    gender: "Male",
-    contactNumber: "+91 9876543210",
-    email: "sureshkishor@gmail.com",
-    city: "New Delhi",
-    aadhaar: "1234 5678 9012",
+    gender: "",
+    contactNumber: "",
+    email: "",
+    city: "",
+    aadhaar: "",
     
     // Medical Information
-    bloodGroup: "B+",
-    height: 175,
-    weight: 78,
-    allergies: ["Penicillin", "Shellfish"],
-    chronicConditions: ["Hypertension"],
-    currentMedications: "Amlodipine 5mg (once daily), Vitamin D3 (weekly)",
+    bloodGroup: "",
+    height: 0,
+    weight: 0,
+    allergies: [],
+    chronicConditions: [],
+    currentMedications: "",
     
     // Emergency Contact
-    emergencyName: "Priya Sharma",
-    emergencyRelation: "Spouse",
-    emergencyPhone: "+91 9876543211",
+    emergencyName: "",
+    emergencyRelation: "",
+    emergencyPhone: "",
     
     // Healthcare Preferences
     preferredConsultationType: "Hybrid",
     preferredLanguage: "Hindi",
-    insuranceProvider: "Star Health",
-    insurancePolicyNumber: "SH-789456123"
+    insuranceProvider: "",
+    insurancePolicyNumber: ""
   });
+
+  // Helper function to format Aadhaar number
+  const formatAadhaar = (aadhaar) => {
+    if (!aadhaar) return "";
+    const aadhaarStr = aadhaar.toString();
+    if (aadhaarStr.length === 12) {
+      return aadhaarStr.replace(/(\d{4})(\d{4})(\d{4})/, '$1 $2 $3');
+    }
+    return aadhaarStr;
+  };
+
+  // Load user data from localStorage on component mount
+  useEffect(() => {
+    const currentPatient = localStorage.getItem('currentPatient');
+    if (currentPatient) {
+      try {
+        const patientData = JSON.parse(currentPatient);
+        console.log('Loaded patient data:', patientData);
+        
+        // Map database fields to profile data structure
+        setProfileData(prev => ({
+          ...prev,
+          fullName: patientData.name || "",
+          age: patientData.age || 0,
+          patientId: `VS-PT-${patientData.id || '12345'}`,
+          gender: patientData.gender || "",
+          contactNumber: patientData.phoneno ? `+91 ${patientData.phoneno}` : "",
+          aadhaar: patientData.aadharno ? formatAadhaar(patientData.aadharno) : "",
+          height: patientData.height || 0,
+          weight: patientData.weight || 0,
+          // Set some default values for fields not in database
+          bloodGroup: "B+", // You might want to add this to your database
+          city: "New Delhi", // You might want to add this to your database
+          email: patientData.name ? `${patientData.name.toLowerCase().replace(/\s+/g, '')}@gmail.com` : "",
+          allergies: ["Penicillin", "Shellfish"], // Default values - add to DB later
+          chronicConditions: ["Hypertension"], // Default values - add to DB later
+          currentMedications: "Amlodipine 5mg (once daily), Vitamin D3 (weekly)",
+          emergencyName: "Emergency Contact",
+          emergencyRelation: "Family",
+          emergencyPhone: "+91 9876543211",
+          insuranceProvider: "Star Health",
+          insurancePolicyNumber: "SH-789456123"
+        }));
+      } catch (error) {
+        console.error('Error parsing patient data:', error);
+        // If there's an error, redirect to login
+        navigate('/patient-login');
+      }
+    } else {
+      // No patient data found, redirect to login
+      navigate('/patient-login');
+    }
+  }, [navigate]);
 
   // Calculate BMI
   const calculateBMI = (height, weight) => {
@@ -172,7 +227,7 @@ export default function PatientProfileDashboard() {
   const bmi = calculateBMI(profileData.height, profileData.weight);
   const bmiCategory = getBMICategory(parseFloat(bmi));
 
-  return (
+ return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       {/* Header */}
       <header className="bg-white/95 backdrop-blur-md shadow-sm border-b border-gray-100 sticky top-0 z-50">
@@ -200,9 +255,13 @@ export default function PatientProfileDashboard() {
               </button>
               <div className="flex items-center space-x-3">
                 <div className="w-8 h-8 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full flex items-center justify-center">
-                  <span className="text-white text-sm font-semibold">SK</span>
+                  <span className="text-white text-sm font-semibold">
+                    {profileData.fullName ? profileData.fullName.split(' ').map(n => n[0]).join('').toUpperCase() : 'PT'}
+                  </span>
                 </div>
-                <span className="hidden sm:block text-sm font-medium text-gray-700">Suresh Kishor</span>
+                <span className="hidden sm:block text-sm font-medium text-gray-700">
+                  {profileData.fullName || 'Patient'}
+                </span>
               </div>
             </div>
           </div>
@@ -225,7 +284,11 @@ export default function PatientProfileDashboard() {
                   <button
                     key={item.id}
                     onClick={() => {
-                      setActiveSection(item.id);
+                      if (item.id === 'signout') {
+                        setActiveSection('signout');
+                      } else {
+                        setActiveSection(item.id);
+                      }
                       setIsSidebarOpen(false);
                     }}
                     className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 ${
@@ -264,7 +327,7 @@ export default function PatientProfileDashboard() {
                       {profileData.profilePhoto ? (
                         <img src={profileData.profilePhoto} alt="Profile" className="w-full h-full object-cover rounded-2xl" />
                       ) : (
-                        profileData.fullName.split(' ').map(n => n[0]).join('')
+                        profileData.fullName ? profileData.fullName.split(' ').map(n => n[0]).join('').toUpperCase() : 'PT'
                       )}
                     </div>
                     <button className="absolute inset-0 bg-black bg-opacity-40 rounded-2xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
@@ -275,7 +338,7 @@ export default function PatientProfileDashboard() {
                   {/* Basic Info */}
                   <div className="flex-1 text-center md:text-left">
                     <div className="flex items-center justify-center md:justify-start space-x-3 mb-2">
-                      <h1 className="text-3xl font-black text-gray-900">{profileData.fullName}</h1>
+                      <h1 className="text-3xl font-black text-gray-900">{profileData.fullName || 'Patient Name'}</h1>
                       {profileData.isVerified && (
                         <div className="bg-green-100 p-1 rounded-full">
                           <CheckCircle className="w-6 h-6 text-green-600" />
@@ -283,12 +346,12 @@ export default function PatientProfileDashboard() {
                       )}
                     </div>
                     <p className="text-xl text-green-600 font-semibold mb-2">Patient ID: {profileData.patientId}</p>
-                    <p className="text-lg text-gray-600 mb-4">{profileData.age} years old • {profileData.gender}</p>
+                    <p className="text-lg text-gray-600 mb-4">{profileData.age > 0 ? `${profileData.age} years old` : 'Age not specified'} • {profileData.gender || 'Gender not specified'}</p>
                     
                     <div className="flex flex-wrap gap-4 justify-center md:justify-start mb-6">
                       <div className="flex items-center space-x-2 bg-blue-50 px-4 py-2 rounded-lg">
                         <Droplet className="w-4 h-4 text-blue-600" />
-                        <span className="text-sm font-medium text-blue-800">{profileData.bloodGroup}</span>
+                        <span className="text-sm font-medium text-blue-800">{profileData.bloodGroup || 'Unknown'}</span>
                       </div>
                       <div className="flex items-center space-x-2 bg-purple-50 px-4 py-2 rounded-lg">
                         <Activity className="w-4 h-4 text-purple-600" />
@@ -302,14 +365,17 @@ export default function PatientProfileDashboard() {
 
                     {/* Arogya Sahayak AI Button */}
                     <div className="mt-6">
-                      <button className="group relative inline-flex items-center space-x-3 px-8 py-4 bg-gradient-to-r from-purple-600 via-blue-600 to-teal-600 text-white rounded-2xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 font-bold text-lg overflow-hidden">
+                      <button 
+                        className="group relative inline-flex items-center space-x-3 px-8 py-4 bg-gradient-to-r from-purple-600 via-blue-600 to-teal-600 text-white rounded-2xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 font-bold text-lg overflow-hidden"
+                        onClick={() => navigate("/book-appointment")}
+                      >
                         <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-blue-600 to-teal-600 opacity-90 group-hover:opacity-100 transition-opacity"></div>
                         <div className="absolute inset-0 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 opacity-0 group-hover:opacity-20 transition-opacity"></div>
                         <div className="relative flex items-center space-x-3">
                           <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center group-hover:rotate-12 transition-transform">
                             <Bot className="w-5 h-5 text-white" />
                           </div>
-                          <span className="group-hover:text-yellow-200 transition-colors"  onClick={() => navigate("/book-appointment")}>Arogya Sahayak AI</span>
+                          <span className="group-hover:text-yellow-200 transition-colors">Arogya Sahayak AI</span>
                           <Sparkles className="w-5 h-5 text-yellow-300 group-hover:text-yellow-200 transition-colors animate-pulse" />
                         </div>
                         <div className="absolute -top-1 -right-1 w-6 h-6 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full flex items-center justify-center">
