@@ -125,7 +125,7 @@ export default function BookAppointmentPage() {
                 <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
                   <Heart className="w-5 h-5 text-white" />
                 </div>
-                <span className="text-xl font-bold text-gray-900">VedSeva</span>
+                <span className="text-xl font-bold text-gray-900">वैदSeva</span>
               </div>
             </div>
             
@@ -136,9 +136,9 @@ export default function BookAppointmentPage() {
               </button>
               <div className="flex items-center space-x-3">
                 <div className="w-8 h-8 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full flex items-center justify-center">
-                  <span className="text-white text-sm font-semibold">RS</span>
+                  <span className="text-white text-sm font-semibold">SK</span>
                 </div>
-                <span className="hidden sm:block text-sm font-medium text-gray-700">Rajesh Sharma</span>
+                <span className="hidden sm:block text-sm font-medium text-gray-700">Suresh Kishor</span>
               </div>
             </div>
           </div>
@@ -282,7 +282,7 @@ export default function BookAppointmentPage() {
                       <span className="text-white text-sm font-semibold">RS</span>
                     </div>
                     <div>
-                      <h3 className="font-bold text-gray-900">Rajesh Sharma</h3>
+                      <h3 className="font-bold text-gray-900">Suresh Kishor</h3>
                       <p className="text-sm text-gray-600">Patient ID: VS-PT-12345</p>
                     </div>
                   </div>

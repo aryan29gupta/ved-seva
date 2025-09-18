@@ -10,7 +10,7 @@ export default function Navbar() {
               className="h-7 w-7 rounded-lg bg-gradient-to-br from-blue-600 to-purple-600 shadow-[0_0_24px_rgba(59,130,246,0.6)]"
               aria-hidden
             />
-            <span className="text-lg font-semibold tracking-tight">VedSeva</span>
+            <span className="text-lg font-semibold tracking-tight">वैदSeva</span>
           </a>
           <nav className="hidden md:flex items-center gap-6 text-sm text-slate-200">
             <a href="#services" className="hover:text-white transition-colors">

@@ -55,7 +55,7 @@ export default function NurseProfile() {
     gender: "Female",
     dob: "1990-05-15",
     phone: "+91 98765 43210",
-    email: "sarah.johnson@vedseva.com",
+    email: "sarah.johnson@gmail.com",
     location: "Mumbai, Maharashtra",
     
     // Professional Info
@@ -163,7 +163,7 @@ export default function NurseProfile() {
               <div className="w-10 h-10 bg-gradient-to-r from-red-500 to-red-600 rounded-xl flex items-center justify-center shadow-lg transform hover:scale-110 transition-transform duration-300">
                 <Heart className="w-6 h-6 text-white" />
               </div>
-              <span className="text-2xl font-bold text-gray-900">VedSeva</span>
+              <span className="text-2xl font-bold text-gray-900">वैदSeva</span>
             </div>
             
             {/* Desktop Menu */}

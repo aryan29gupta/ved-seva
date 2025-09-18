@@ -42,7 +42,7 @@ export default function Page() {
               <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg transform hover:scale-110 transition-transform duration-300">
                 <Heart className="w-6 h-6 text-white" />
               </div>
-              <span className="text-2xl font-bold text-gray-900">VedSeva</span>
+              <span className="text-2xl font-bold text-gray-900">वैदSeva</span>
             </div>
             
             {/* Desktop Menu */}
@@ -323,14 +323,14 @@ export default function Page() {
               {
                 name: "Priya Sharma",
                 location: "Rural Maharashtra",
-                testimonial: "VedSeva's AI diagnosis helped detect my condition early. The telemedicine service brought world-class healthcare to my village.",
+                testimonial: "वैदSeva's AI diagnosis helped detect my condition early. The telemedicine service brought world-class healthcare to my village.",
                 rating: 5,
                 avatar: "PS",
               },
               {
                 name: "Dr. Rajesh Kumar",
                 location: "Community Health Center",
-                testimonial: "As a rural doctor, VedSeva's AI assistance has enhanced my diagnostic capabilities tremendously. It's like having a specialist always available.",
+                testimonial: "As a rural doctor, वैदSeva's AI assistance has enhanced my diagnostic capabilities tremendously. It's like having a specialist always available.",
                 rating: 5,
                 avatar: "RK",
               },
@@ -427,7 +427,7 @@ export default function Page() {
             Ready to Experience the Future of Healthcare?
           </h2>
           <p className="text-xl text-blue-100 mb-10 max-w-3xl mx-auto leading-relaxed">
-            Join thousands of patients and healthcare providers who trust VedSeva for AI-powered medical care. Start your journey towards better health today.
+            Join thousands of patients and healthcare providers who trust वैदSeva for AI-powered medical care. Start your journey towards better health today.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-6 justify-center">

@@ -52,7 +52,7 @@ export default function PatientProfileDashboard() {
   const [profileData, setProfileData] = useState({
     // Header Card
     profilePhoto: null,
-    fullName: "Rajesh Kumar Sharma",
+    fullName: "Suresh Kishor",
     age: 34,
     patientId: "VS-PT-12345",
     isVerified: true,
@@ -60,7 +60,7 @@ export default function PatientProfileDashboard() {
     // Personal Information
     gender: "Male",
     contactNumber: "+91 9876543210",
-    email: "rajesh.sharma@vedseva.com",
+    email: "sureshkishor@gmail.com",
     city: "New Delhi",
     aadhaar: "1234 5678 9012",
     
@@ -189,7 +189,7 @@ export default function PatientProfileDashboard() {
                 <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
                   <Heart className="w-5 h-5 text-white" />
                 </div>
-                <span className="text-xl font-bold text-gray-900">VedSeva</span>
+                <span className="text-xl font-bold text-gray-900">वैदSeva</span>
               </div>
             </div>
             
@@ -200,9 +200,9 @@ export default function PatientProfileDashboard() {
               </button>
               <div className="flex items-center space-x-3">
                 <div className="w-8 h-8 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full flex items-center justify-center">
-                  <span className="text-white text-sm font-semibold">RS</span>
+                  <span className="text-white text-sm font-semibold">SK</span>
                 </div>
-                <span className="hidden sm:block text-sm font-medium text-gray-700">Rajesh Sharma</span>
+                <span className="hidden sm:block text-sm font-medium text-gray-700">Suresh Kishor</span>
               </div>
             </div>
           </div>
@@ -818,7 +818,7 @@ export default function PatientProfileDashboard() {
                   <LogOut className="w-8 h-8 text-red-600" />
                 </div>
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">Sign Out</h2>
-                <p className="text-gray-600 mb-8">Are you sure you want to sign out of your VedSeva account?</p>
+                <p className="text-gray-600 mb-8">Are you sure you want to sign out of your वैदSeva account?</p>
                 <div className="flex space-x-4 justify-center">
                   <button 
                     onClick={() => setActiveSection('profile')}

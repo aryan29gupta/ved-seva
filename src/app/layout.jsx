@@ -14,7 +14,7 @@ const sourceSansPro = Source_Sans_Pro({
 })
 
 export const metadata = {
-  title: "VedSeva - AI-Powered Healthcare Platform",
+  title: "वैदSeva - AI-Powered Healthcare Platform",
   description: "Experience the future of healthcare with AI-powered diagnostics and comprehensive medical services",
 }
 

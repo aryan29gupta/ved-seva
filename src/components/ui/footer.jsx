@@ -37,7 +37,7 @@ export default function Footer() {
                     <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl flex items-center justify-center transform hover:rotate-12 transition-transform duration-300">
                       <Heart className="w-6 h-6 text-white" />
                     </div>
-                    <span className="text-2xl font-bold">VedSeva</span>
+                    <span className="text-2xl font-bold">वैदSeva</span>
                   </div>
                   <p className="text-gray-300 leading-relaxed">
                     Transforming healthcare with AI-powered solutions for better health outcomes in rural and urban communities.
@@ -84,7 +84,7 @@ export default function Footer() {
               </div>
               
               <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
-                <p>&copy; 2025 VedSeva. Transforming lives through AI-powered healthcare.</p>
+                <p>&copy; 2025 वैदSeva. Transforming lives through AI-powered healthcare.</p>
               </div>
             </div>
           </footer>

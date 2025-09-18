@@ -115,7 +115,7 @@ export default function NGODashboard() {
               <Heart className="w-6 h-6 text-white" />
             </div>
             <div>
-              <span className="text-lg font-bold text-gray-900">VedSeva</span>
+              <span className="text-lg font-bold text-gray-900">वैदSeva</span>
               <div className="text-xs text-green-600 font-medium">NGO Portal</div>
             </div>
           </div>

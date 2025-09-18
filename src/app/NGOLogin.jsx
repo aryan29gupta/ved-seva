@@ -87,7 +87,7 @@ export default function NGOLoginPage() {
               <div className="w-10 h-10 bg-gradient-to-r from-green-500 to-green-600 rounded-xl flex items-center justify-center shadow-lg transform hover:scale-110 transition-transform duration-300">
                 <Heart className="w-6 h-6 text-white" />
               </div>
-              <span className="text-2xl font-bold text-gray-900">VedSeva</span>
+              <span className="text-2xl font-bold text-gray-900">वैदSeva</span>
             </div>
             
             {/* Desktop Menu */}

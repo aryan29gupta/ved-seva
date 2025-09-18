@@ -32,8 +32,8 @@ export default function AppointmentsSection() {
 
   // Get logged in patient data from localStorage
   const loggedInPatientName = typeof window !== 'undefined' 
-    ? localStorage.getItem("patientName") || "Jatin Yadav"
-    : "Jatin Yadav";
+    ? localStorage.getItem("patientName") || "Suresh Kishor"
+    : "Suresh Kishor";
   
   const selectedProblem = typeof window !== 'undefined'
     ? localStorage.getItem("selectedProblem") || "Skin Problem"

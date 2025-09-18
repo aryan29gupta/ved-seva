@@ -46,7 +46,7 @@ export default function DoctorProfileDashboard() {
     // Personal Information
     gender: "Male",
     contactNumber: "+91 98765 43210",
-    email: "dr.rajesh@vedseva.com",
+    email: "rajesh@gmail.com",
     city: "New Delhi",
     
     // Professional Information
@@ -170,7 +170,7 @@ export default function DoctorProfileDashboard() {
                 <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
                   <Heart className="w-5 h-5 text-white" />
                 </div>
-                <span className="text-xl font-bold text-gray-900">VedSeva</span>
+                <span className="text-xl font-bold text-gray-900">वैदSeva</span>
               </div>
             </div>
             
