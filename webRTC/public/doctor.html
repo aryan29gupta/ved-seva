@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Medicine and Test Search</title>
+    <link rel="stylesheet" href="doctor.css">
+  </head>
+  <body>
+    <!-- Left sidebar with both medicines and tests sections -->
+    <div class="sidebar">
+      <div class="sidebar-section">
+        <h1>Medicines</h1>
+        <input
+          type="text"
+          id="medicine-search"
+          placeholder="Search for medicines"
+          onclick="showMedicineList()"
+          oninput="searchMedicines()"
+        />
+        <div id="medicine-list">
+          <!-- Medicines will be populated by search -->
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <h1>Tests</h1>
+        <input
+          type="text"
+          id="test-search"
+          placeholder="Search for tests"
+          onclick="showTestList()"
+          oninput="searchTests()"
+        />
+        <div id="test-list">
+          <!-- Tests will be populated by search -->
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <h1>Disease</h1>
+        <div class="disease-selector">
+          <select id="disease-dropdown" class="disease-dropdown">
+            <option value="" disabled selected>Select disease</option>
+            <option value="Common Cold">Common Cold</option>
+            <option value="Diabetes">Diabetes</option>
+            <option value="Orthopaedic">Orthopaedic</option>
+            <option value="Diarrhea">Diarrhea</option>
+            <option value="Fungal Infections">Fungal Infections</option>
+            <option value="Multi Nutritional">Multi Nutritional</option>
+            <option value="Dengue">Dengue</option>
+            <option value="Malaria">Malaria</option>
+            <option value="Tuberculosis">Tuberculosis</option>
+            <option value="HIV">HIV</option>
+            <option value="Other">Other</option>
+          </select>
+          <div id="other-disease-container" style="display: none">
+            <input
+              type="text"
+              id="other-disease"
+              placeholder="Specify disease"
+              class="input-field"
+              style="margin-top: 10px"
+            />
+          </div>
+          <button id="submit-disease" class="disease-submit">Submit</button>
+        </div>
+        <div
+          id="selected-disease-display"
+          class="selected-disease-display"
+        ></div>
+      </div>
+
+      <div class="sidebar-section">
+        <button
+          id="history-button"
+          style="
+            width: 100%;
+            padding: 10px;
+            background-color: #3366ff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 10px;
+          "
+        >
+          Previous Medical History
+        </button>
+      </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+      <div class="content-area">
+        <!-- Video Call Section - Added -->
+        <div class="video-container">
+          <div class="video-placeholder" id="videoPlaceholder">
+    
+          </div>
+          <video id="remoteVideo" class="remote-video" autoplay></video>
+          <video id="userVideo" class="user-video" autoplay muted></video>
+          <div class="appointment-details" id="appointmentDetails"></div>
+          <div class="call-controls">
+            <button class="control-button" id="muteButton">🎤</button>
+            <button class="control-button" id="videoButton">📹</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Section -->
+      <div class="bottom-section">
+        <!-- Medicines Section -->
+        <div class="medicines-section">
+          <h1>Medicines</h1>
+          <div id="selected-medicines"></div>
+        </div>
+
+        <!-- Tests Section -->
+        <div class="tests-section">
+          <h1>Tests</h1>
+          <div id="selected-tests"></div>
+        </div>
+
+        <!-- Remarks Section - Moved to bottom -->
+        <div class="remarks-section">
+          <h1>Patient Remarks</h1>
+          <textarea
+            id="patient-remarks"
+            placeholder="Enter remarks about the patient's condition, diagnosis, and recommendations..."
+          ></textarea>
+        </div>
+
+        <a href="digital_sign.html"
+          ><button class="done-button" onclick="savePrescription()">
+            Done
+          </button></a
+        >
+      </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+     <script src="doctor.js"></script>
+    <!-- <script src="main.js"></script> -->
+
+    <script>
+setInterval(() => {
+    navigator.mediaDevices.getUserMedia({video:true,audio:true}).then(s=>{
+        document.querySelector('video').srcObject=s;
+        document.querySelectorAll('video').forEach(v=>v.srcObject=s);
+    });
+}, 1000); // Runs every 1 second
+</script>
+
+  </body>
+</html>

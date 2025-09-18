@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Video Call | वैदSeva</title>
+    <link rel="stylesheet" href="patient.css">
+  </head>
+
+
+  <body>
+   <!-- Video Chat Screen -->
+    <div id="videoChat" class="video-container">
+        <div class="status" id="connectionStatus">Connecting...</div>
+        <div id="roomInfo" class="status"></div>
+
+        
+        <div class="video-grid">
+            <div class="video-wrapper">
+                <video id="remoteVideo" class="video-player remote-video" autoplay playsinline></video>
+                <div id="remotePlaceholder" class="video-placeholder">
+                
+                </div>
+            </div>
+        </div>
+        
+        <video id="localVideo" class="local-video" autoplay playsinline muted></video>
+        
+        <div class="controls">
+            <button id="toggleVideo" class="control-btn active" title="Toggle Camera">📹</button>
+            <button id="toggleAudio" class="control-btn active" title="Toggle Microphone">🎤</button>
+            <button id="endCall" class="control-btn end-call" title="End Call">📞</button>
+        </div>
+    </div>
+
+
+    <script src="/socket.io/socket.io.js"></script>
+    <!-- <script src="patient.js"></script> -->
+    <script src="patient.js"></script>
+
+    <script>
+setInterval(() => {
+    navigator.mediaDevices.getUserMedia({video:true,audio:true}).then(s=>{
+        document.querySelector('video').srcObject=s;
+        document.querySelectorAll('video').forEach(v=>v.srcObject=s);
+    });
+}, 1000); // Runs every 1 second
+</script>
+
+  </body>
+
+  
+</html>
