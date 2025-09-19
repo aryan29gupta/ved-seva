@@ -54,14 +54,14 @@ export default function DoctorProfileDashboard() {
           
           // Personal Information
           gender: parsedData.gender || "Male",
-          contactNumber: parsedData.contactNumber || "",
-          email: parsedData.email || "",
+          contactNumber: parsedData.contactNumber || "xxxxxxxxxx",
+          email: parsedData.email || "patient@gmail.com",
           city: parsedData.city || "",
           
           // Professional Information
           education: parsedData.education || "MBBS",
           specializations: parsedData.specializations || [parsedData.specialization || "General Medicine"],
-          experience: parsedData.experience || "0",
+          experience: parsedData.experience || "2",
           affiliation: parsedData.affiliation || "",
           
           // Practice Settings
