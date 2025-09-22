@@ -31,11 +31,21 @@ import {
 } from "lucide-react";
 import Footer from '../components/ui/footer';
 import AppointmentsSection from './DoctorAppointment';
+import { useNavigate } from "react-router-dom";
 
 export default function DoctorProfileDashboard() {
   const [activeSection, setActiveSection] = useState('profile');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [editMode, setEditMode] = useState({});
+  const navigate = useNavigate();
+
+  const handleSignOut = () => {
+    if (window.confirm("Are you sure you want to sign out?")) {
+      localStorage.removeItem("doctorData"); // clear doctor data
+      localStorage.removeItem("token");      // clear token if you use one
+      navigate("/");                         // redirect to homepage/login
+    }
+  };
 
   // Initialize profile data from localStorage or use defaults
   const [profileData, setProfileData] = useState(() => {
@@ -623,7 +633,7 @@ export default function DoctorProfileDashboard() {
           {activeSection === 'appointments' && <AppointmentsSection />}
 
           {/* Other sections */}
-          {activeSection !== 'profile' && activeSection !== 'appointments' && (
+          {activeSection !== 'profile' && activeSection !== 'appointments' && activeSection !== 'signout' && (
           <div className="max-w-4xl mx-auto">
             <div className="bg-white/80 backdrop-blur-lg rounded-3xl shadow-xl border border-gray-100 p-8 text-center">
             <h2 className="text-2xl font-bold text-gray-900 mb-4 capitalize">{activeSection}</h2>
@@ -631,6 +641,32 @@ export default function DoctorProfileDashboard() {
           </div>
   </div>
 )}
+
+{/* Sign Out confirmation would typically be handled here */}
+          {activeSection === 'signout' && (
+            <div className="max-w-2xl mx-auto">
+              <div className="bg-white/80 backdrop-blur-lg rounded-3xl shadow-xl border border-gray-100 p-8 text-center">
+                <div className="w-16 h-16 bg-red-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                  <LogOut className="w-8 h-8 text-red-600" />
+                </div>
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">Sign Out</h2>
+                <p className="text-gray-600 mb-8">Are you sure you want to sign out of your वैदSeva account?</p>
+                <div className="flex space-x-4 justify-center">
+                  <button 
+                    onClick={() => setActiveSection('profile')}
+                    className="bg-gray-500 text-white px-6 py-3 rounded-xl hover:bg-gray-600 transition-colors font-medium"
+                  >
+                    Cancel
+                  </button>
+                  <button className="bg-red-500 text-white px-6 py-3 rounded-xl hover:bg-red-600 transition-colors font-medium" onClick={() => navigate("/")}>
+                    Sign Out
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+
         </main>
       </div>
       <Footer/>
