@@ -39,7 +39,9 @@ import {
   Home,
   Bot,
   Brain,
-  Sparkles
+  Sparkles,
+  Mic,     
+  ArrowRight 
 } from "lucide-react";
 import Footer from '../components/ui/footer';
 import { useNavigate } from "react-router-dom";
@@ -316,7 +318,7 @@ export default function PatientProfileDashboard() {
 
         {/* Main Content */}
         <main className="flex-1 p-6 lg:p-8">
-          {activeSection === 'profile' && (
+                    {activeSection === 'profile' && (
             <div className="max-w-4xl mx-auto space-y-8">
               {/* Header Card */}
               <div className="bg-white/80 backdrop-blur-lg rounded-3xl shadow-xl border border-gray-100 p-8">
@@ -362,28 +364,89 @@ export default function PatientProfileDashboard() {
                         <span className="text-sm font-medium text-green-800">Active Patient</span>
                       </div>
                     </div>
+                  </div>
+                </div>
+              </div>
 
-                    {/* Arogya Sahayak AI Button */}
-                    <div className="mt-6">
-                      <button 
-                        className="group relative inline-flex items-center space-x-3 px-8 py-4 bg-gradient-to-r from-purple-600 via-blue-600 to-teal-600 text-white rounded-2xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 font-bold text-lg overflow-hidden"
-                        onClick={() => navigate("/book-appointment")}
-                      >
-                        <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-blue-600 to-teal-600 opacity-90 group-hover:opacity-100 transition-opacity"></div>
-                        <div className="absolute inset-0 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 opacity-0 group-hover:opacity-20 transition-opacity"></div>
-                        <div className="relative flex items-center space-x-3">
-                          <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center group-hover:rotate-12 transition-transform">
-                            <Bot className="w-5 h-5 text-white" />
-                          </div>
-                          <span className="group-hover:text-yellow-200 transition-colors">Arogya Sahayak AI</span>
-                          <Sparkles className="w-5 h-5 text-yellow-300 group-hover:text-yellow-200 transition-colors animate-pulse" />
-                        </div>
-                        <div className="absolute -top-1 -right-1 w-6 h-6 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full flex items-center justify-center">
-                          <Brain className="w-3 h-3 text-white" />
-                        </div>
-                      </button>
-                      <p className="text-sm text-gray-500 mt-2 text-center md:text-left">Your AI health assistant for personalized care</p>
+              {/* Priority AI Health Assistant Card */}
+              <div className="bg-white/80 backdrop-blur-lg rounded-3xl shadow-xl border border-gray-100 p-8">
+                <div className="text-center mb-6">
+                  <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-purple-100 to-blue-100 rounded-2xl mb-4">
+                    <Bot className="w-8 h-8 text-purple-600" />
+                  </div>
+                  
+                  <h2 className="text-2xl font-bold text-gray-900 mb-3">
+                    Meet Your AI Health Assistant
+                  </h2>
+                  
+                  <p className="text-gray-600 mb-4">
+                    Get instant symptom analysis, smart health insights, and direct appointment booking through our AI-powered voice assistant.
+                  </p>
+                </div>
+
+                {/* Enhanced CTA Button */}
+                <div className="text-center mb-6">
+                  <button 
+                    className="group relative inline-flex items-center space-x-4 px-8 py-4 bg-gradient-to-r from-purple-600 via-blue-600 to-teal-600 text-white rounded-2xl hover:shadow-xl transform hover:scale-105 transition-all duration-300 font-bold text-lg"
+                    onClick={() => {
+                      window.location.href = "https://e77d370d3f3b.ngrok-free.app";
+                    }}
+                  >
+                    <div className="flex items-center space-x-3">
+                      <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center group-hover:rotate-12 transition-transform duration-300">
+                        <Mic className="w-5 h-5 text-white" />
+                      </div>
+                      
+                      <div className="flex flex-col items-start">
+                        <span className="text-xl font-bold">Arogya Sahayak AI</span>
+                        <span className="text-sm text-white/80">Tell me your symptoms</span>
+                      </div>
+
+                      <ArrowRight className="w-5 h-5 text-white group-hover:translate-x-1 transition-transform duration-300" />
                     </div>
+                  </button>
+                </div>
+                
+                <div className="flex items-center justify-center space-x-6 text-gray-600">
+                  <div className="flex items-center space-x-2">
+                    <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                    <span className="text-sm">24/7 Available</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Shield className="w-4 h-4 text-gray-500" />
+                    <span className="text-sm">100% Private</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Clock className="w-4 h-4 text-gray-500" />
+                    <span className="text-sm">Instant Results</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* How it Works Mini Guide */}
+              <div className="bg-white/80 backdrop-blur-lg rounded-3xl shadow-xl border border-gray-100 p-8">
+                <h3 className="text-xl font-bold text-gray-800 mb-4 text-center">🚀 How Arogya Sahayak Works</h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="text-center">
+                    <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                      <Mic className="w-6 h-6 text-purple-600" />
+                    </div>
+                    <h4 className="font-semibold text-gray-800 mb-1">1. Speak Naturally</h4>
+                    <p className="text-sm text-gray-600">Describe your symptoms in your own words</p>
+                  </div>
+                  <div className="text-center">
+                    <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                      <Brain className="w-6 h-6 text-blue-600" />
+                    </div>
+                    <h4 className="font-semibold text-gray-800 mb-1">2. AI Analysis</h4>
+                    <p className="text-sm text-gray-600">Get intelligent health insights instantly</p>
+                  </div>
+                  <div className="text-center">
+                    <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                      <Calendar className="w-6 h-6 text-green-600" />
+                    </div>
+                    <h4 className="font-semibold text-gray-800 mb-1">3. Book Appointment</h4>
+                    <p className="text-sm text-gray-600">Connect with the right doctor immediately</p>
                   </div>
                 </div>
               </div>
@@ -446,7 +509,7 @@ export default function PatientProfileDashboard() {
                   <div className="w-10 h-10 bg-red-100 rounded-xl flex items-center justify-center">
                     <Heart className="w-6 h-6 text-red-600" />
                   </div>
-                  <h2 className="text-2xl font-bold text-gray-900">Medical Information</h2>
+                  <h2 className="text-2xl font-bold text-gray-900">Health Records</h2>
                 </div>
                 
                 <div className="space-y-6">
@@ -572,7 +635,6 @@ export default function PatientProfileDashboard() {
               </div>
             </div>
           )}
-
           {/* Appointments Section */}
           {activeSection === 'appointments' && (
             <div className="max-w-4xl mx-auto space-y-8">
@@ -584,53 +646,182 @@ export default function PatientProfileDashboard() {
                   <h2 className="text-2xl font-bold text-gray-900">My Appointments</h2>
                 </div>
                 
-                <div className="space-y-4">
-                  {/* Upcoming Appointments */}
-                  <div className="bg-green-50 rounded-2xl p-6 border border-green-100">
-                    <div className="flex items-start space-x-4">
-                      <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
-                        <Clock className="w-6 h-6 text-green-600" />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="font-bold text-gray-900 mb-1">Dr. Priya Sharma - Cardiologist</h3>
-                        <p className="text-gray-600 mb-2">Regular Checkup</p>
-                        <div className="flex items-center space-x-4 text-sm text-gray-500">
-                          <span>Tomorrow, 10:30 AM</span>
-                          <span>•</span>
-                          <span>Online Consultation</span>
+                <div className="space-y-6">
+                  {/* Upcoming Appointments Section */}
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center space-x-2">
+                      <Clock className="w-5 h-5 text-green-600" />
+                      <span>Upcoming Appointments</span>
+                    </h3>
+                    
+                    {/* Tomorrow's Appointment */}
+                    <div className="bg-green-50 rounded-2xl p-6 border border-green-100 mb-4">
+                      <div className="flex items-start space-x-4">
+                        <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
+                          <Stethoscope className="w-6 h-6 text-green-600" />
+                        </div>
+                        <div className="flex-1">
+                          <h4 className="font-bold text-gray-900 mb-1">Dr. Priya Sharma - Cardiologist</h4>
+                          <p className="text-gray-600 mb-2">Regular Checkup & Blood Pressure Monitoring</p>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-gray-600">
+                            <div className="flex items-center space-x-2">
+                              <Calendar className="w-4 h-4 text-green-600" />
+                              <span className="font-medium">September 24, 2025 (Tomorrow)</span>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <Clock className="w-4 h-4 text-green-600" />
+                              <span>10:30 AM - 11:00 AM</span>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <Globe className="w-4 h-4 text-green-600" />
+                              <span>Online Consultation</span>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <MapPin className="w-4 h-4 text-green-600" />
+                              <span>Video Call</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex flex-col space-y-2">
+                          <button className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors font-medium">
+                            Join Call
+                          </button>
                         </div>
                       </div>
-                      <button className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors">
-                        Join
-                      </button>
+                    </div>
+
+                    {/* Next Week's Appointment */}
+                    <div className="bg-blue-50 rounded-2xl p-6 border border-blue-100">
+                      <div className="flex items-start space-x-4">
+                        <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+                          <Eye className="w-6 h-6 text-blue-600" />
+                        </div>
+                        <div className="flex-1">
+                          <h4 className="font-bold text-gray-900 mb-1">Dr. Rajesh Gupta - Ophthalmologist</h4>
+                          <p className="text-gray-600 mb-2">Eye Examination & Vision Test</p>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-gray-600">
+                            <div className="flex items-center space-x-2">
+                              <Calendar className="w-4 h-4 text-blue-600" />
+                              <span className="font-medium">October 1, 2025</span>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <Clock className="w-4 h-4 text-blue-600" />
+                              <span>3:00 PM - 3:30 PM</span>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <Building className="w-4 h-4 text-blue-600" />
+                              <span>In-person Visit</span>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <MapPin className="w-4 h-4 text-blue-600" />
+                              <span>Delhi Eye Care Center</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex flex-col space-y-2">
+                          <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors font-medium">
+                            View Details
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   </div>
                   
-                  {/* Past Appointments */}
-                  <div className="bg-gray-50 rounded-2xl p-6 border border-gray-100">
-                    <div className="flex items-start space-x-4">
-                      <div className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center">
-                        <CheckCircle className="w-6 h-6 text-gray-600" />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="font-bold text-gray-900 mb-1">Dr. Amit Kumar - General Physician</h3>
-                        <p className="text-gray-600 mb-2">Hypertension Follow-up</p>
-                        <div className="flex items-center space-x-4 text-sm text-gray-500">
-                          <span>Last Week, 2:00 PM</span>
-                          <span>•</span>
-                          <span>Completed</span>
+                  {/* Past Appointments Section */}
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center space-x-2">
+                      <CheckCircle className="w-5 h-5 text-gray-600" />
+                      <span>Past Appointments</span>
+                    </h3>
+                    
+                    {/* Last Week's Appointment */}
+                    <div className="bg-gray-50 rounded-2xl p-6 border border-gray-100 mb-4">
+                      <div className="flex items-start space-x-4">
+                        <div className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center">
+                          <Stethoscope className="w-6 h-6 text-gray-600" />
+                        </div>
+                        <div className="flex-1">
+                          <h4 className="font-bold text-gray-900 mb-1">Dr. Amit Kumar - General Physician</h4>
+                          <p className="text-gray-600 mb-2">Hypertension Follow-up & Medication Review</p>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-gray-600">
+                            <div className="flex items-center space-x-2">
+                              <Calendar className="w-4 h-4 text-gray-500" />
+                              <span className="font-medium">September 16, 2025</span>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <Clock className="w-4 h-4 text-gray-500" />
+                              <span>2:00 PM - 2:30 PM</span>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <CheckCircle className="w-4 h-4 text-green-500" />
+                              <span className="text-green-600 font-medium">Completed</span>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <Building className="w-4 h-4 text-gray-500" />
+                              <span>In-person Visit</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex flex-col space-y-2">
+                          <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors font-medium">
+                            View Report
+                          </button>
+                          <button className="text-blue-600 hover:text-blue-700 text-sm font-medium">
+                            Download
+                          </button>
                         </div>
                       </div>
-                      <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
-                        View Report
-                      </button>
+                    </div>
+
+                    {/* Previous Month's Appointment */}
+                    <div className="bg-gray-50 rounded-2xl p-6 border border-gray-100">
+                      <div className="flex items-start space-x-4">
+                        <div className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center">
+                          <Heart className="w-6 h-6 text-gray-600" />
+                        </div>
+                        <div className="flex-1">
+                          <h4 className="font-bold text-gray-900 mb-1">Dr. Meera Singh - Cardiologist</h4>
+                          <p className="text-gray-600 mb-2">ECG Test & Cardiac Health Assessment</p>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-gray-600">
+                            <div className="flex items-center space-x-2">
+                              <Calendar className="w-4 h-4 text-gray-500" />
+                              <span className="font-medium">August 28, 2025</span>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <Clock className="w-4 h-4 text-gray-500" />
+                              <span>11:00 AM - 12:00 PM</span>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <CheckCircle className="w-4 h-4 text-green-500" />
+                              <span className="text-green-600 font-medium">Completed</span>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <Building className="w-4 h-4 text-gray-500" />
+                              <span>Fortis Hospital, Delhi</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex flex-col space-y-2">
+                          <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors font-medium">
+                            View Report
+                          </button>
+                          <button className="text-blue-600 hover:text-blue-700 text-sm font-medium">
+                            Download
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
                 
-                <div className="mt-6 text-center">
-                  <button className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-xl hover:shadow-lg transform hover:scale-105 transition-all duration-300 font-medium">
-                    Book New Appointment
+                <div className="mt-8 text-center">
+                  <button 
+                    className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-3 rounded-xl hover:shadow-lg transform hover:scale-105 transition-all duration-300 font-medium"
+                    onClick={() => {
+                      navigate("/book-appointment");
+                    }}
+                  >
+                    Book New Appointment with AI Assistant
                   </button>
                 </div>
               </div>

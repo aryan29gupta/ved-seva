@@ -16,7 +16,7 @@ import {
   Pill,
   TestTube,
   AlertTriangle,
-  FileText
+  FileText,
 } from "lucide-react";
 
 export default function AppointmentsSection() {
@@ -372,7 +372,9 @@ export default function AppointmentsSection() {
                         
                         {appointment.status === "in-progress" && (
                           <button
-                            onClick={() => startCall(appointment.id)}
+                            onClick={() => {startCall(appointment.id)
+                            window.location.href = "https://e77d370d3f3b.ngrok-free.app";
+                            }}
                             className="flex items-center space-x-1 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 text-sm font-medium"
                           >
                             <Video className="w-4 h-4" />

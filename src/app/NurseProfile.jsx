@@ -522,7 +522,7 @@ export default function NurseProfile() {
                     <h3 className="text-xl font-bold text-gray-800 border-b border-red-200 pb-2">Upcoming Appointments</h3>
                     <div className="space-y-3">
                       {[
-                        { patient: "Neeraj Patel", time: "10:00 AM", type: "Regular Checkup" },
+                        { patient: "Suresh Kishor", time: "11:30 AM", type: "Regular Checkup" },
                         { patient: "Sunaina Rajput", time: "2:00 PM", type: "Follow-up" },
                         { patient: "Raj Sharma", time: "4:30 PM", type: "Medication Review" }
                       ].map((appointment, index) => (
