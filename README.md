@@ -1,6 +1,5 @@
 # वैदSeva 🏥 - Empowering Rural Healthcare Through Technology
 
-[![Smart India Hackathon 2025](https://img.shields.io/badge/SIH-2025-orange)](https://sih.gov.in/)
 [![GitHub stars](https://img.shields.io/github/stars/aryan29gupta/ved-seva?style=social)](https://github.com/aryan29gupta/ved-seva/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/aryan29gupta/ved-seva?style=social)](https://github.com/aryan29gupta/ved-seva/network)
 [![Live Demo](https://img.shields.io/badge/Live-Demo-success?style=flat&logo=vercel)](https://ved-seva.vercel.app/)
