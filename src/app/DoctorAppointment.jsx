@@ -36,8 +36,8 @@ export default function AppointmentsSection() {
     : "Suresh Kishor";
   
   const selectedProblem = typeof window !== 'undefined'
-    ? localStorage.getItem("selectedProblem") || "Skin Problem"
-    : "Skin Problem";
+    ? localStorage.getItem("selectedProblem") || "General Checkup"
+    : "General Checkup";
 
   // Initialize appointments data
   useEffect(() => {
@@ -46,7 +46,7 @@ export default function AppointmentsSection() {
         id: 1,
         patientName: loggedInPatientName,
         patientInitials: loggedInPatientName.split(" ").map(n => n[0]).join(""),
-        problem: selectedProblem,
+        problem: "Respiratory Issues",
         time: "11:30 AM",
         duration: "30 mins",
         status: "in-progress",
@@ -72,7 +72,7 @@ export default function AppointmentsSection() {
         id: 3,
         patientName: "Raju Padhi",
         patientInitials: "KG",
-        problem: "Respiratory Issues",
+        problem: "General Checkup",
         time: "11:00 AM",
         duration: "30 mins",
         status: "upcoming",
@@ -373,7 +373,7 @@ export default function AppointmentsSection() {
                         {appointment.status === "in-progress" && (
                           <button
                             onClick={() => {startCall(appointment.id)
-                            window.location.href = "https://e77d370d3f3b.ngrok-free.app";
+                            window.location.href = "https://unmotionable-pa-unpersuadably.ngrok-free.dev/doctor.html";
                             }}
                             className="flex items-center space-x-1 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 text-sm font-medium"
                           >

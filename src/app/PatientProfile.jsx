@@ -389,7 +389,7 @@ export default function PatientProfileDashboard() {
                   <button 
                     className="group relative inline-flex items-center space-x-4 px-8 py-4 bg-gradient-to-r from-purple-600 via-blue-600 to-teal-600 text-white rounded-2xl hover:shadow-xl transform hover:scale-105 transition-all duration-300 font-bold text-lg"
                     onClick={() => {
-                      window.location.href = "https://e77d370d3f3b.ngrok-free.app";
+                      window.location.href = "https://b3f198ec32dfa07565.gradio.live/";
                     }}
                   >
                     <div className="flex items-center space-x-3">

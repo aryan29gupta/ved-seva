@@ -55,7 +55,7 @@ export default function NurseProfile() {
     gender: "Female",
     dob: "1990-05-15",
     phone: "+91 98765 43210",
-    email: "sarah.johnson@gmail.com",
+    email: "priya@gmail.com",
     location: "Mumbai, Maharashtra",
     
     // Professional Info
