@@ -66,7 +66,7 @@ Visit `http://localhost:3000` to see the app in action!
 | Metric | Before | After | Improvement |
 |--------|--------|-------|-------------|
 | Consultation Time | 4 hours | 30 minutes | 🔻 87.5% |
-| Cost per Visit | ₹550 | ₹30 | 🔻 94.5% |
+| Cost per Visit | ₹550 | ₹10 |
 | Mortality Rate | Baseline | -30% | ✅ Preventable deaths |
 | Doctor Access | Limited | 24/7 | ✅ Always available |
 
