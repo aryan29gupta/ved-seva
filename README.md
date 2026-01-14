@@ -9,7 +9,7 @@
 VedSeva is a comprehensive telemedicine platform designed specifically for rural India, addressing the critical healthcare accessibility challenges faced by over **900 million rural Indians**. Our solution combines AI-powered diagnostics, multilingual support, and offline-first functionality to deliver quality healthcare to the remotest villages.
 
 **🔗 Quick Access Links:**
-- 🌐 **Live Platform:** [ved-seva.vercel.app](https://ved-sevaa.vercel.app/) 
+- 🌐 **Live Platform:** [ved-sevaa.vercel.app](https://ved-sevaa.vercel.app/) 
 - 📹 **Demo Video:** [YouTube Presentation](https://youtu.be/ZLUWfYBtKfU?si=hI1Xguy76gxdV72F)
 - 📊 **Source Code:** [GitHub Repository](https://github.com/aryan29gupta/ved-seva)
 - 📚 **Research Paper:** [Complete Documentation](https://drive.google.com/file/d/10CSiUA1PUSc4GcmV33d7J2-uOxD-x075/view)
@@ -133,7 +133,7 @@ graph TB
 
 ## 🎯 Demo & Links
 
-- 🌐 **Live Demo:** [https://ved-seva.vercel.app/](https://ved-sevaa.vercel.app/) - वैदSeva: YOUR HEALTH OUR PRIORITY
+- 🌐 **Live Demo:** [https://ved-sevaa.vercel.app/](https://ved-sevaa.vercel.app/) - वैदSeva: YOUR HEALTH OUR PRIORITY
 - 📹 **Demo Video:** [Watch Full Presentation](https://youtu.be/ZLUWfYBtKfU?si=hI1Xguy76gxdV72F)
 - 📊 **GitHub Repository:** [https://github.com/aryan29gupta/ved-seva](https://github.com/aryan29gupta/ved-seva)
 - 🔍 **Research Documentation:** [Complete Research Paper](https://drive.google.com/file/d/10CSiUA1PUSc4GcmV33d7J2-uOxD-x075/view)
@@ -202,7 +202,7 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 - **Email:** team.vedseva@gmail.com
 - **GitHub:** [@aryan29gupta](https://github.com/aryan29gupta)  
 - **LinkedIn:** [VedSeva Team](https://linkedin.com/company/vedseva)
-- **Website:** [https://ved-seva.vercel.app/](https://ved-seva.vercel.app/)
+- **Website:** [https://ved-sevaa.vercel.app/](https://ved-sevaa.vercel.app/)
 
 ## 📄 License
 
