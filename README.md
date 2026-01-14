@@ -9,7 +9,7 @@
 VedSeva is a comprehensive telemedicine platform designed specifically for rural India, addressing the critical healthcare accessibility challenges faced by over **900 million rural Indians**. Our solution combines AI-powered diagnostics, multilingual support, and offline-first functionality to deliver quality healthcare to the remotest villages.
 
 **🔗 Quick Access Links:**
-- 🌐 **Live Platform:** [ved-seva.vercel.app](https://ved-seva.vercel.app/) 
+- 🌐 **Live Platform:** [ved-seva.vercel.app](https://ved-sevaa.vercel.app/) 
 - 📹 **Demo Video:** [YouTube Presentation](https://youtu.be/ZLUWfYBtKfU?si=hI1Xguy76gxdV72F)
 - 📊 **Source Code:** [GitHub Repository](https://github.com/aryan29gupta/ved-seva)
 - 📚 **Research Paper:** [Complete Documentation](https://drive.google.com/file/d/10CSiUA1PUSc4GcmV33d7J2-uOxD-x075/view)
