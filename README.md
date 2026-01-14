@@ -133,7 +133,7 @@ graph TB
 
 ## 🎯 Demo & Links
 
-- 🌐 **Live Demo:** [https://ved-seva.vercel.app/](https://ved-seva.vercel.app/) - वैदSeva: YOUR HEALTH OUR PRIORITY
+- 🌐 **Live Demo:** [https://ved-seva.vercel.app/](https://ved-sevaa.vercel.app/) - वैदSeva: YOUR HEALTH OUR PRIORITY
 - 📹 **Demo Video:** [Watch Full Presentation](https://youtu.be/ZLUWfYBtKfU?si=hI1Xguy76gxdV72F)
 - 📊 **GitHub Repository:** [https://github.com/aryan29gupta/ved-seva](https://github.com/aryan29gupta/ved-seva)
 - 🔍 **Research Documentation:** [Complete Research Paper](https://drive.google.com/file/d/10CSiUA1PUSc4GcmV33d7J2-uOxD-x075/view)
